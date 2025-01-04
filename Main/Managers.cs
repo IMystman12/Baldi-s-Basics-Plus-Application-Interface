@@ -162,7 +162,6 @@ namespace BALDI_FULL_INTERFACE
     }
     public class AssetInjector
     {
-        private static OnSthOutputInSingle<SceneObject> invokeOnLoaded;
         public class SpawnConfig
         {
             public int weight = 100;
@@ -198,9 +197,10 @@ namespace BALDI_FULL_INTERFACE
                 PlayerFileManager.Instance.itemObjects.Add(item);
             }
             WeightedItemObject wio = new WeightedItemObject() { selection = item, weight = cfg.weight };
+            OnSthOutputInSingle<SceneObject> o = null;
             if (cfg.spawnInShop)
             {
-                invokeOnLoaded += (SceneObject scene) =>
+                o += (SceneObject scene) =>
                    {
                        scene.shopItems.Add(wio);
                    };
@@ -209,32 +209,33 @@ namespace BALDI_FULL_INTERFACE
             {
                 if (cfg.add)
                 {
-                    invokeOnLoaded += (SceneObject scene) =>
+                    o += (SceneObject scene) =>
                     {
                         scene.levelObject.items.Add(wio);
                     };
                 }
                 if (cfg.forcedSpawn)
                 {
-                    invokeOnLoaded += (SceneObject scene) =>
+                    o += (SceneObject scene) =>
                     {
                         scene.levelObject.forcedItems.Add(item);
                     };
                 }
                 if (cfg.isPotential)
                 {
-                    invokeOnLoaded += (SceneObject scene) =>
+                    o += (SceneObject scene) =>
                     {
                         scene.levelObject.potentialItems.Add(wio);
                     };
                 }
                 if (cfg.spawnInShop)
                 {
-                    invokeOnLoaded += (SceneObject scene) =>
+                    o += (SceneObject scene) =>
                     {
                         scene.levelObject.shopItems.Add(wio);
                     };
                 }
+                ForeachScenes(o, cfg);
             }
         }
         public class ItemConfig : SpawnConfig
@@ -253,20 +254,22 @@ namespace BALDI_FULL_INTERFACE
                 cfg = new NPCConfig();
             }
             WeightedNPC win = new WeightedNPC() { selection = nPC, weight = cfg.weight };
+            OnSthOutputInSingle<SceneObject> o = null;
             if (cfg.isPotential)
             {
-                invokeOnLoaded += (SceneObject scene) =>
+                o += (SceneObject scene) =>
                 {
                     scene.levelObject.potentialNPCs.Add(win);
                 };
             }
             if (cfg.isPotential)
             {
-                invokeOnLoaded += (SceneObject scene) =>
+                o += (SceneObject scene) =>
                 {
                     scene.levelObject.forcedNpcs.Add(nPC);
                 };
             }
+            ForeachScenes(o, cfg);
         }
         public class NPCConfig : SpawnConfig
         {
@@ -288,20 +291,22 @@ namespace BALDI_FULL_INTERFACE
                 cfg = new BuilderConfig();
             }
             WeightedObjectBuilder w = new WeightedObjectBuilder() { selection = builder, weight = cfg.weight };
+            OnSthOutputInSingle<SceneObject> o = null;
             if (cfg.forcedSpecialHall)
             {
-                invokeOnLoaded += (SceneObject scene) =>
+                o += (SceneObject scene) =>
                 {
                     scene.levelObject.forcedSpecialHallBuilders.Add(builder);
                 };
             }
             if (cfg.specialHall)
             {
-                invokeOnLoaded += (SceneObject scene) =>
+                o += (SceneObject scene) =>
                 {
                     scene.levelObject.specialHallBuilders.Add(w);
                 };
             }
+            ForeachScenes(o, cfg);
         }
         public class BuilderConfig : SpawnConfig
         {
@@ -316,10 +321,11 @@ namespace BALDI_FULL_INTERFACE
                 cfg = new RandomEventConfig();
             }
             WeightedRandomEvent w = new WeightedRandomEvent() { selection = re, weight = cfg.weight };
-            OnSthOutputInSingle<SceneObject> invokeOnLoaded = (SceneObject scene) =>
+            OnSthOutputInSingle<SceneObject> o = (SceneObject scene) =>
                 {
                     scene.levelObject.randomEvents.Add(w);
                 };
+            ForeachScenes(o, cfg);
         }
         public class RandomEventConfig : SpawnConfig
         {
@@ -331,7 +337,8 @@ namespace BALDI_FULL_INTERFACE
                 cfg = new RoomAssetConfig();
             }
             WeightedRoomAsset w = new WeightedRoomAsset() { selection = roomAsset, weight = cfg.weight };
-            invokeOnLoaded += (SceneObject scene) =>
+            OnSthOutputInSingle<SceneObject> o = null;
+            o += (SceneObject scene) =>
             {
                 foreach (var item in scene.levelObject.roomGroup)
                 {
@@ -346,7 +353,7 @@ namespace BALDI_FULL_INTERFACE
             };
             if (cfg.categories.Contains(RoomCategory.Hall))
             {
-                invokeOnLoaded += (SceneObject scene) =>
+                o += (SceneObject scene) =>
                 {
                     scene.levelObject.potentialPrePlotSpecialHalls.Add(w);
                     scene.levelObject.potentialPostPlotSpecialHalls.Add(w);
@@ -354,11 +361,12 @@ namespace BALDI_FULL_INTERFACE
             }
             if (cfg.categories.Contains(RoomCategory.Special))
             {
-                invokeOnLoaded += (SceneObject scene) =>
+                o += (SceneObject scene) =>
                 {
                     scene.levelObject.potentialSpecialRooms.Add(w);
                 };
             }
+            ForeachScenes(o, cfg);
         }
         public class RoomAssetConfig : SpawnConfig
         {
@@ -370,10 +378,11 @@ namespace BALDI_FULL_INTERFACE
             {
                 cfg = new RoomGroupConfig();
             }
-            invokeOnLoaded = (SceneObject scene) =>
+            OnSthOutputInSingle<SceneObject> o = (SceneObject scene) =>
             {
                 scene.levelObject.roomGroup.Add(group);
             };
+            ForeachScenes(o, cfg);
         }
         public class RoomGroupConfig : SpawnConfig
         {
@@ -384,7 +393,8 @@ namespace BALDI_FULL_INTERFACE
             {
                 cfg = new RoomGroupConfig();
             }
-            invokeOnLoaded += (SceneObject scene) =>
+            OnSthOutputInSingle<SceneObject> o = null;
+            o += (SceneObject scene) =>
             {
                 foreach (var item in scene.levelObject.roomGroup)
                 {
@@ -394,6 +404,7 @@ namespace BALDI_FULL_INTERFACE
                     }
                 }
             };
+            ForeachScenes(o, cfg);
         }
         public static void AddRoomTexture(Texture2D texture, RoomTextureConfig cfg)
         {
@@ -402,7 +413,8 @@ namespace BALDI_FULL_INTERFACE
                 cfg = new RoomTextureConfig();
             }
             WeightedTexture2D wt = new WeightedTexture2D() { selection = texture, weight = cfg.weight };
-            invokeOnLoaded += (SceneObject scene) =>
+            OnSthOutputInSingle<SceneObject> o = null;
+            o += (SceneObject scene) =>
             {
                 foreach (var item in scene.levelObject.roomGroup)
                 {
@@ -423,6 +435,7 @@ namespace BALDI_FULL_INTERFACE
                     }
                 }
             };
+            ForeachScenes(o, cfg);
         }
         public class RoomTextureConfig : SpawnConfig
         {
@@ -431,7 +444,7 @@ namespace BALDI_FULL_INTERFACE
             public bool wall;
             public bool floor;
         }
-        public static void  AddPoster(PosterObject poster, PosterConfig cfg = default)
+        public static IEnumerator AddPoster(PosterObject poster, PosterConfig cfg = default)
         {
             if (cfg == null)
             {
@@ -448,6 +461,8 @@ namespace BALDI_FULL_INTERFACE
                     }
                 }
             };
+            yield return new WaitForMainMenu();
+            ForeachScenes(o, cfg);
         }
         public class PosterConfig : SpawnConfig
         {
