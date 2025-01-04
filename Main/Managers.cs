@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using BALDI_FULL_INTERFACE.Patches;
-using BepInEx;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityInterface;
 namespace BALDI_FULL_INTERFACE
 {
