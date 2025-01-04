@@ -187,7 +187,7 @@ namespace BALDI_FULL_INTERFACE
             }
             return sol;
         }
-        public static IEnumerator AddItem(ItemObject item, ItemConfig cfg = default)
+        public static void AddItem(ItemObject item, ItemConfig cfg = default)
         {
             if (cfg == null)
             {
@@ -198,7 +198,6 @@ namespace BALDI_FULL_INTERFACE
                 PlayerFileManager.Instance.itemObjects.Add(item);
             }
             WeightedItemObject wio = new WeightedItemObject() { selection = item, weight = cfg.weight };
-            OnSthOutputInSingle<SceneObject> invokeOnLoaded = null;
             if (cfg.spawnInShop)
             {
                 invokeOnLoaded += (SceneObject scene) =>
@@ -236,8 +235,6 @@ namespace BALDI_FULL_INTERFACE
                         scene.levelObject.shopItems.Add(wio);
                     };
                 }
-                yield return new WaitForMainMenu();
-                ForeachScenes(invokeOnLoaded, cfg);
             }
         }
         public class ItemConfig : SpawnConfig
@@ -249,30 +246,27 @@ namespace BALDI_FULL_INTERFACE
             public bool isPotential = true;
             public bool spawnInShop = true;
         }
-        public static IEnumerator AddNPC(NPC nPC, NPCConfig cfg = default)
+        public static void AddNPC(NPC nPC, NPCConfig cfg = default)
         {
             if (cfg == null)
             {
                 cfg = new NPCConfig();
             }
             WeightedNPC win = new WeightedNPC() { selection = nPC, weight = cfg.weight };
-            OnSthOutputInSingle<SceneObject> o = null;
             if (cfg.isPotential)
             {
-                o += (SceneObject scene) =>
+                invokeOnLoaded += (SceneObject scene) =>
                 {
                     scene.levelObject.potentialNPCs.Add(win);
                 };
             }
             if (cfg.isPotential)
             {
-                o += (SceneObject scene) =>
+                invokeOnLoaded += (SceneObject scene) =>
                 {
                     scene.levelObject.forcedNpcs.Add(nPC);
                 };
             }
-            yield return new WaitForMainMenu();
-            ForeachScenes(o, cfg);
         }
         public class NPCConfig : SpawnConfig
         {
@@ -437,7 +431,7 @@ namespace BALDI_FULL_INTERFACE
             public bool wall;
             public bool floor;
         }
-        public static IEnumerator AddPoster(PosterObject poster, PosterConfig cfg = default)
+        public static void  AddPoster(PosterObject poster, PosterConfig cfg = default)
         {
             if (cfg == null)
             {
@@ -454,8 +448,6 @@ namespace BALDI_FULL_INTERFACE
                     }
                 }
             };
-            yield return new WaitForMainMenu();
-            ForeachScenes(o, cfg);
         }
         public class PosterConfig : SpawnConfig
         {
