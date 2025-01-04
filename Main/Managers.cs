@@ -162,6 +162,7 @@ namespace BALDI_FULL_INTERFACE
     }
     public class AssetInjector
     {
+        private static OnSthOutputInSingle<SceneObject> invokeOnLoaded;
         public class SpawnConfig
         {
             public int weight = 100;
@@ -197,10 +198,10 @@ namespace BALDI_FULL_INTERFACE
                 PlayerFileManager.Instance.itemObjects.Add(item);
             }
             WeightedItemObject wio = new WeightedItemObject() { selection = item, weight = cfg.weight };
-            OnSthOutputInSingle<SceneObject> o = null;
+            OnSthOutputInSingle<SceneObject> invokeOnLoaded = null;
             if (cfg.spawnInShop)
             {
-                o += (SceneObject scene) =>
+                invokeOnLoaded += (SceneObject scene) =>
                    {
                        scene.shopItems.Add(wio);
                    };
@@ -209,34 +210,34 @@ namespace BALDI_FULL_INTERFACE
             {
                 if (cfg.add)
                 {
-                    o += (SceneObject scene) =>
+                    invokeOnLoaded += (SceneObject scene) =>
                     {
                         scene.levelObject.items.Add(wio);
                     };
                 }
                 if (cfg.forcedSpawn)
                 {
-                    o += (SceneObject scene) =>
+                    invokeOnLoaded += (SceneObject scene) =>
                     {
                         scene.levelObject.forcedItems.Add(item);
                     };
                 }
                 if (cfg.isPotential)
                 {
-                    o += (SceneObject scene) =>
+                    invokeOnLoaded += (SceneObject scene) =>
                     {
                         scene.levelObject.potentialItems.Add(wio);
                     };
                 }
                 if (cfg.spawnInShop)
                 {
-                    o += (SceneObject scene) =>
+                    invokeOnLoaded += (SceneObject scene) =>
                     {
                         scene.levelObject.shopItems.Add(wio);
                     };
                 }
                 yield return new WaitForMainMenu();
-                ForeachScenes(o, cfg);
+                ForeachScenes(invokeOnLoaded, cfg);
             }
         }
         public class ItemConfig : SpawnConfig
@@ -286,30 +287,27 @@ namespace BALDI_FULL_INTERFACE
         public class TemplateConfig : SpawnConfig
         {
         }
-        public static IEnumerator AddBuilder(ObjectBuilder builder, BuilderConfig cfg = default)
+        public static void AddBuilder(ObjectBuilder builder, BuilderConfig cfg = default)
         {
             if (cfg == null)
             {
                 cfg = new BuilderConfig();
             }
             WeightedObjectBuilder w = new WeightedObjectBuilder() { selection = builder, weight = cfg.weight };
-            OnSthOutputInSingle<SceneObject> o = null;
             if (cfg.forcedSpecialHall)
             {
-                o += (SceneObject scene) =>
+                invokeOnLoaded += (SceneObject scene) =>
                 {
                     scene.levelObject.forcedSpecialHallBuilders.Add(builder);
                 };
             }
             if (cfg.specialHall)
             {
-                o += (SceneObject scene) =>
+                invokeOnLoaded += (SceneObject scene) =>
                 {
                     scene.levelObject.specialHallBuilders.Add(w);
                 };
             }
-            yield return new WaitForMainMenu();
-            ForeachScenes(o, cfg);
         }
         public class BuilderConfig : SpawnConfig
         {
@@ -317,32 +315,29 @@ namespace BALDI_FULL_INTERFACE
             public bool forcedSpecialHall;
             public static BuilderConfig AllOn => new BuilderConfig() { forcedSpecialHall = true, specialHall = true };
         }
-        public static IEnumerator AddRandomEvent(RandomEvent re, RandomEventConfig cfg = default)
+        public static void AddRandomEvent(RandomEvent re, RandomEventConfig cfg = default)
         {
             if (cfg == null)
             {
                 cfg = new RandomEventConfig();
             }
             WeightedRandomEvent w = new WeightedRandomEvent() { selection = re, weight = cfg.weight };
-            OnSthOutputInSingle<SceneObject> o = (SceneObject scene) =>
+            OnSthOutputInSingle<SceneObject> invokeOnLoaded = (SceneObject scene) =>
                 {
                     scene.levelObject.randomEvents.Add(w);
                 };
-            yield return new WaitForMainMenu();
-            ForeachScenes(o, cfg);
         }
         public class RandomEventConfig : SpawnConfig
         {
         }
-        public static IEnumerator AddRoom(RoomAsset roomAsset, RoomAssetConfig cfg = default)
+        public static void AddRoom(RoomAsset roomAsset, RoomAssetConfig cfg = default)
         {
             if (cfg == null)
             {
                 cfg = new RoomAssetConfig();
             }
             WeightedRoomAsset w = new WeightedRoomAsset() { selection = roomAsset, weight = cfg.weight };
-            OnSthOutputInSingle<SceneObject> o = null;
-            o += (SceneObject scene) =>
+            invokeOnLoaded += (SceneObject scene) =>
             {
                 foreach (var item in scene.levelObject.roomGroup)
                 {
@@ -357,7 +352,7 @@ namespace BALDI_FULL_INTERFACE
             };
             if (cfg.categories.Contains(RoomCategory.Hall))
             {
-                o += (SceneObject scene) =>
+                invokeOnLoaded += (SceneObject scene) =>
                 {
                     scene.levelObject.potentialPrePlotSpecialHalls.Add(w);
                     scene.levelObject.potentialPostPlotSpecialHalls.Add(w);
@@ -365,42 +360,37 @@ namespace BALDI_FULL_INTERFACE
             }
             if (cfg.categories.Contains(RoomCategory.Special))
             {
-                o += (SceneObject scene) =>
+                invokeOnLoaded += (SceneObject scene) =>
                 {
                     scene.levelObject.potentialSpecialRooms.Add(w);
                 };
             }
-            yield return new WaitForMainMenu();
-            ForeachScenes(o, cfg);
         }
         public class RoomAssetConfig : SpawnConfig
         {
             public List<RoomCategory> categories = new List<RoomCategory>();
         }
-        public static IEnumerator AddRoomGroup(RoomGroup group, RoomGroupConfig cfg)
+        public static void AddRoomGroup(RoomGroup group, RoomGroupConfig cfg)
         {
             if (cfg == null)
             {
                 cfg = new RoomGroupConfig();
             }
-            OnSthOutputInSingle<SceneObject> o = (SceneObject scene) =>
+            invokeOnLoaded = (SceneObject scene) =>
             {
                 scene.levelObject.roomGroup.Add(group);
             };
-            yield return new WaitForMainMenu();
-            ForeachScenes(o, cfg);
         }
         public class RoomGroupConfig : SpawnConfig
         {
         }
-        public static IEnumerator ReplaceRoomGroup(RoomGroup group, RoomGroupConfig cfg)
+        public static void ReplaceRoomGroup(RoomGroup group, RoomGroupConfig cfg)
         {
             if (cfg == null)
             {
                 cfg = new RoomGroupConfig();
             }
-            OnSthOutputInSingle<SceneObject> o = null;
-            o += (SceneObject scene) =>
+            invokeOnLoaded += (SceneObject scene) =>
             {
                 foreach (var item in scene.levelObject.roomGroup)
                 {
@@ -410,18 +400,15 @@ namespace BALDI_FULL_INTERFACE
                     }
                 }
             };
-            yield return new WaitForMainMenu();
-            ForeachScenes(o, cfg);
         }
-        public static IEnumerator AddRoomTexture(Texture2D texture, RoomTextureConfig cfg)
+        public static void AddRoomTexture(Texture2D texture, RoomTextureConfig cfg)
         {
             if (cfg == null)
             {
                 cfg = new RoomTextureConfig();
             }
             WeightedTexture2D wt = new WeightedTexture2D() { selection = texture, weight = cfg.weight };
-            OnSthOutputInSingle<SceneObject> o = null;
-            o += (SceneObject scene) =>
+            invokeOnLoaded += (SceneObject scene) =>
             {
                 foreach (var item in scene.levelObject.roomGroup)
                 {
@@ -442,8 +429,6 @@ namespace BALDI_FULL_INTERFACE
                     }
                 }
             };
-            yield return new WaitForMainMenu();
-            ForeachScenes(o, cfg);
         }
         public class RoomTextureConfig : SpawnConfig
         {
@@ -451,6 +436,29 @@ namespace BALDI_FULL_INTERFACE
             public bool ceiling;
             public bool wall;
             public bool floor;
+        }
+        public static IEnumerator AddPoster(PosterObject poster, PosterConfig cfg = default)
+        {
+            if (cfg == null)
+            {
+                cfg = new RoomGroupConfig();
+            }
+            OnSthOutputInSingle<SceneObject> o = null;
+            o += (SceneObject scene) =>
+            {
+                foreach (var item in scene.levelObject.roomGroup)
+                {
+                    if (item.name == group.name)
+                    {
+                        group.Merge(item);
+                    }
+                }
+            };
+            yield return new WaitForMainMenu();
+            ForeachScenes(o, cfg);
+        }
+        public class PosterConfig : SpawnConfig
+        {
         }
     }
     public static class AssetConverter
