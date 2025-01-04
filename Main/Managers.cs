@@ -167,8 +167,13 @@ namespace BALDI_FULL_INTERFACE
             public int weight = 100;
             public List<string> excludeLevelTitles = new List<string>();
         }
-        protected static void ForeachScenes(OnSthOutputInSingle<SceneObject> o, SpawnConfig cfg)
+        protected static void AddToQueen(OnSthOutputInSingle<SceneObject> j, SpawnConfig cfg)
         {
+            Invoker.Instance.StartCoroutine(OnAssetLoaded(j, cfg));
+        }
+        private static IEnumerator OnAssetLoaded(OnSthOutputInSingle<SceneObject> o, SpawnConfig cfg)
+        {
+            yield return new WaitForMainMenu();
             foreach (var scene in GetAllSceneObjectWithoutExclude(cfg))
             {
                 o?.Invoke(scene);
@@ -235,7 +240,7 @@ namespace BALDI_FULL_INTERFACE
                         scene.levelObject.shopItems.Add(wio);
                     };
                 }
-                ForeachScenes(o, cfg);
+                AddToQueen(o, cfg);
             }
         }
         public class ItemConfig : SpawnConfig
@@ -269,7 +274,7 @@ namespace BALDI_FULL_INTERFACE
                     scene.levelObject.forcedNpcs.Add(nPC);
                 };
             }
-            ForeachScenes(o, cfg);
+            AddToQueen(o, cfg);
         }
         public class NPCConfig : SpawnConfig
         {
@@ -306,7 +311,7 @@ namespace BALDI_FULL_INTERFACE
                     scene.levelObject.specialHallBuilders.Add(w);
                 };
             }
-            ForeachScenes(o, cfg);
+            AddToQueen(o, cfg);
         }
         public class BuilderConfig : SpawnConfig
         {
@@ -325,7 +330,7 @@ namespace BALDI_FULL_INTERFACE
                 {
                     scene.levelObject.randomEvents.Add(w);
                 };
-            ForeachScenes(o, cfg);
+            AddToQueen(o, cfg);
         }
         public class RandomEventConfig : SpawnConfig
         {
@@ -342,16 +347,13 @@ namespace BALDI_FULL_INTERFACE
             {
                 foreach (var item in scene.levelObject.roomGroup)
                 {
-                    foreach (var item1 in cfg.categories)
+                    if (cfg.categories.Contains(item.name))
                     {
-                        if (item.name.ToLower() == item1.ToString().ToLower())
-                        {
-                            item.potentialRooms.Add(w);
-                        }
+                        item.potentialRooms.Add(w);
                     }
                 }
             };
-            if (cfg.categories.Contains(RoomCategory.Hall))
+            if (cfg.categories.Contains("Hall"))
             {
                 o += (SceneObject scene) =>
                 {
@@ -359,18 +361,18 @@ namespace BALDI_FULL_INTERFACE
                     scene.levelObject.potentialPostPlotSpecialHalls.Add(w);
                 };
             }
-            if (cfg.categories.Contains(RoomCategory.Special))
+            if (cfg.categories.Contains("Special"))
             {
                 o += (SceneObject scene) =>
                 {
                     scene.levelObject.potentialSpecialRooms.Add(w);
                 };
             }
-            ForeachScenes(o, cfg);
+            AddToQueen(o, cfg);
         }
         public class RoomAssetConfig : SpawnConfig
         {
-            public List<RoomCategory> categories = new List<RoomCategory>();
+            public List<string> categories = new List<string>();
         }
         public static void AddRoomGroup(RoomGroup group, RoomGroupConfig cfg)
         {
@@ -382,7 +384,7 @@ namespace BALDI_FULL_INTERFACE
             {
                 scene.levelObject.roomGroup.Add(group);
             };
-            ForeachScenes(o, cfg);
+            AddToQueen(o, cfg);
         }
         public class RoomGroupConfig : SpawnConfig
         {
@@ -404,7 +406,7 @@ namespace BALDI_FULL_INTERFACE
                     }
                 }
             };
-            ForeachScenes(o, cfg);
+            AddToQueen(o, cfg);
         }
         public static void AddRoomTexture(Texture2D texture, RoomTextureConfig cfg)
         {
@@ -435,7 +437,7 @@ namespace BALDI_FULL_INTERFACE
                     }
                 }
             };
-            ForeachScenes(o, cfg);
+            AddToQueen(o, cfg);
         }
         public class RoomTextureConfig : SpawnConfig
         {
@@ -444,28 +446,33 @@ namespace BALDI_FULL_INTERFACE
             public bool wall;
             public bool floor;
         }
-        public static IEnumerator AddPoster(PosterObject poster, PosterConfig cfg = default)
+        public static void AddPoster(PosterObject poster, PosterConfig cfg = default)
         {
             if (cfg == null)
             {
-                cfg = new RoomGroupConfig();
+                cfg = new PosterConfig();
             }
+            WeightedPosterObject w = new WeightedPosterObject() { selection = poster, weight = cfg.weight };
             OnSthOutputInSingle<SceneObject> o = null;
             o += (SceneObject scene) =>
             {
+                scene.levelObject.posters.Add(w);
                 foreach (var item in scene.levelObject.roomGroup)
                 {
-                    if (item.name == group.name)
+                    if (cfg.categories.Contains(item.name))
                     {
-                        group.Merge(item);
+                        foreach (var item1 in item.potentialRooms)
+                        {
+                            item1.selection.posters.Add(w);
+                        }
                     }
                 }
             };
-            yield return new WaitForMainMenu();
-            ForeachScenes(o, cfg);
+            AddToQueen(o, cfg);
         }
         public class PosterConfig : SpawnConfig
         {
+            public List<string> categories = new List<string>();
         }
     }
     public static class AssetConverter
