@@ -9,9 +9,6 @@ using UnityEngine.SceneManagement;
 using UnityInterface;
 namespace BALDI_FULL_INTERFACE
 {
-    public static class BaldiFull
-    {
-    }
     namespace Options
     {
         namespace Editor
