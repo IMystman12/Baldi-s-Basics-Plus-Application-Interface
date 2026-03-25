@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices.ComTypes;
-using BALDI_FULL_INTERFACE.Options;
 using HarmonyLib;
 using UnityEngine;
 using UnityInterface;
+
 namespace BALDI_FULL_INTERFACE.Patches
 {
     public class WaitForMainMenu : CustomYieldInstruction
@@ -24,16 +23,15 @@ namespace BALDI_FULL_INTERFACE.Patches
         [HarmonyPatch(typeof(OptionsMenu), "Awake"), HarmonyPrefix]
         public static bool Prefix(OptionsMenu __instance)
         {
-            OptionsManager.Initialize(__instance);
             return true;
         }
         [HarmonyPatch(typeof(LocalizationManager), "LoadLocalizedText", typeof(string), typeof(Language)), HarmonyPostfix]
         public static void Postfix(LocalizationManager __instance, string fileName, Language language)
         {
             Dictionary<string, string> d = __instance.GetValue<Dictionary<string, string>>("localizedText");
-            for (int i = 0; i < UnityManager.Plugins.Count; i++)
+            for (int i = 0; i < 99; i++)
             {
-                string p = Path.Combine(AssetManager.GetProjectFolder(UnityManager.Plugins[i]), "Subtitles", fileName);
+                string p = default;
                 if (File.Exists(p))
                 {
                     LocalizationData localizationData = JsonUtility.FromJson<LocalizationData>(File.ReadAllText(p));
