@@ -311,6 +311,7 @@ public static class Register
         public WeightedFilteredAssets<ExtraLevelDataAsset> extraLevelDataAsset = new WeightedFilteredAssets<ExtraLevelDataAsset>();
         public WeightedFilteredAssets<SceneObject> scene = new WeightedFilteredAssets<SceneObject>(), sceneForced = new WeightedFilteredAssets<SceneObject>();
     }
+    [Serializable]
     public class WeightedFilteredAssets<T> where T : UnityEngine.Object
     {
         public bool affect = true;

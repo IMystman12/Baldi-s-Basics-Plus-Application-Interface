@@ -125,3 +125,4 @@ E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\obj\De
 E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\obj\Debug\netstandard2.0\BB+ Application Interface.dll
 E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\obj\Debug\netstandard2.0\BB+ Application Interface.pdb
 E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Unity Interface.xml
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\obj\Debug\netstandard2.0\BB+ Application Interface.sourcelink.json
