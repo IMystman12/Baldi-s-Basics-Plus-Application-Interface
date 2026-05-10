@@ -164,6 +164,11 @@ public static class GeneralActions
         return null;
     }
     public static bool FitToBuildButtonBase(this RoomController room) => room.GetNewTileList().Where(a => a.HasSoftFreeWall).FirstOrDefault() != null;
+    public static int Distance(this IntVector2 a, IntVector2 b)
+    {
+        IntVector2 c = a - b;
+        return Mathf.Abs(c.x) + Mathf.Abs(c.z);
+    }
 }
 public static class Register
 {
