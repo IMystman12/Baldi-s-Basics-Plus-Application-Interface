@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Unity Interface</name>
+    </assembly>
+    <members>
+        <member name="T:UnityInterface.Collections">
+            <summary>
+            A sort of goods!
+            </summary>
+        </member>
+        <member name="M:UnityInterface.Collections.Merge``2(``0,``1)">
+            <summary>
+            Merge all vars from parent to target.
+            </summary>
+            <typeparam name="P"></typeparam>
+            <typeparam name="T"></typeparam>
+            <param name="parent">Merge Sample</param>
+            <param name="target">Merged</param>
+        </member>
+        <member name="M:UnityInterface.PluginManager.QuickOption``1(BepInEx.BaseUnityPlugin,System.String,``0,System.String)">
+             <summary>
+            Shortcut I built! To Bind setting quickly. Nothing special.
+             </summary>
+             <typeparam name="T">settings var "T"ype</typeparam>
+             <param name="plugin">Config file's owner</param>
+             <param name="name"></param>
+             <param name="defualtVal"></param>
+             <param name="summaries"></param>
+             <returns></returns>
+        </member>
+        <member name="M:UnityInterface.PluginManager.GetProjectFolder(System.String)">
+            <summary>
+            Return the folder: Project_{GUID} full path.
+            </summary>
+            <param name="GUID">Customized GUID</param>
+            <returns></returns>
+        </member>
+        <member name="M:UnityInterface.PluginManager.GetProjectFolder(BepInEx.BaseUnityPlugin)">
+            <summary>
+            Return the folder: Project_{plugin.Info.Metadata.GUID} full path.
+            </summary>
+            <param name="plugin">Folder's owner</param>
+            <returns></returns>
+        </member>
+        <member name="T:UnityInterface.WaitForBuiltInResourceLoaded">
+            <summary>
+            If you have toggle done as true! It will still waiting!
+            </summary>
+        </member>
+        <member name="T:DEBUGGER_TRANSFORM_RECT">
+            <summary>
+            Summary TST!
+            </summary>
+        </member>
+        <member name="M:DEBUGGER_TRANSFORM_RECT.Method">
+            <summary>
+            Summary TST #0
+            </summary>
+        </member>
+    </members>
+</doc>

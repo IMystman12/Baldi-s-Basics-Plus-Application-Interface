@@ -1,0 +1,127 @@
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\obj\Debug\netstandard2.0\BB+ Application Interface.csproj.AssemblyReference.cache
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\obj\Debug\netstandard2.0\BB+ Application Interface.GeneratedMSBuildEditorConfig.editorconfig
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\obj\Debug\netstandard2.0\BB+ Application Interface.AssemblyInfoInputs.cache
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\obj\Debug\netstandard2.0\BB+ Application Interface.AssemblyInfo.cs
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\obj\Debug\netstandard2.0\BB+ Application Interface.csproj.CoreCompileInputs.cache
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\BB+ Application Interface.deps.json
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\BB+ Application Interface.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\BB+ Application Interface.pdb
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\0Harmony.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\AlmostEngine.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\AlmostEngine.Shared.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Assembly-CSharp.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\BepInEx.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\BepInEx.Harmony.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\BepInEx.Preloader.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\com.rlabrecque.steamworks.net.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\com.unity.multiplayer-hlapi.Runtime.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\HarmonyXInterop.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Mono.Cecil.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Mono.Cecil.Mdb.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Mono.Cecil.Pdb.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Mono.Cecil.Rocks.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Mono.Security.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\MonoMod.RuntimeDetour.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\MonoMod.Utils.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\NavMeshComponents.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Rewired_Core.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Rewired_Windows.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\System.Configuration.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\System.Diagnostics.StackTrace.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\System.EnterpriseServices.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\System.Globalization.Extensions.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\System.ServiceModel.Internals.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\System.Xml.XPath.XDocument.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UModelerCommon.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Unity Interface.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Unity.Analytics.DataPrivacy.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Unity.Mathematics.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Unity.ProGrids.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Unity.RenderPipeline.Universal.ShaderLibrary.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Unity.RenderPipelines.Core.Runtime.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Unity.RenderPipelines.Core.ShaderLibrary.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Unity.RenderPipelines.Universal.Runtime.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Unity.RenderPipelines.Universal.Shaders.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Unity.TextMeshPro.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Unity.Timeline.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.AccessibilityModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.AIModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.AndroidJNIModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.AnimationModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.ARModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.AssetBundleModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.AudioModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.ClothModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.ClusterInputModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.ClusterRendererModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.CoreModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.CrashReportingModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.DirectorModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.DSPGraphModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.GameCenterModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.GIModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.GridModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.HotReloadModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.ImageConversionModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.IMGUIModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.InputLegacyModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.InputModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.JSONSerializeModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.LocalizationModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.ParticleSystemModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.PerformanceReportingModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.Physics2DModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.PhysicsModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.ProfilerModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.ScreenCaptureModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.SharedInternalsModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.SpatialTracking.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.SpriteMaskModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.SpriteShapeModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.StreamingModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.SubstanceModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.SubsystemsModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.TerrainModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.TerrainPhysicsModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.TextCoreModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.TextRenderingModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.TilemapModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.TLSModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.UI.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.UIElementsModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.UIElementsNativeModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.UIModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.UmbraModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.UNETModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.UnityAnalyticsCommonModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.UnityAnalyticsModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.UnityConnectModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.UnityCurlModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.UnityTestProtocolModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.UnityWebRequestAssetBundleModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.UnityWebRequestAudioModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.UnityWebRequestModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.UnityWebRequestTextureModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.UnityWebRequestWWWModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.VehiclesModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.VFXModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.VideoModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.VirtualTexturingModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.VRModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.WindModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.XR.LegacyInputHelpers.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\UnityEngine.XRModule.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Newtonsoft.Json.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\0Harmony.xml
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\BepInEx.xml
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\BepInEx.Harmony.xml
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\BepInEx.Preloader.xml
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\MonoMod.RuntimeDetour.xml
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\MonoMod.Utils.xml
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\obj\Debug\netstandard2.0\BB+ Appl.A7A62A9E.Up2Date
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\obj\Debug\netstandard2.0\BB+ Application Interface.dll
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\obj\Debug\netstandard2.0\BB+ Application Interface.pdb
+E:\Baldi's Basics Games\Plugins\Baldi's Basics Plus Application Interface\bin\Debug\netstandard2.0\Unity Interface.xml

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net2.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -59,23 +59,14 @@
     <Reference Include="NavMeshComponents">
       <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BALDI_Data\Managed\NavMeshComponents.dll</HintPath>
     </Reference>
-    <Reference Include="netstandard">
-      <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BALDI_Data\Managed\netstandard.dll</HintPath>
-    </Reference>
     <Reference Include="Rewired_Core">
       <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BALDI_Data\Managed\Rewired_Core.dll</HintPath>
     </Reference>
     <Reference Include="Rewired_Windows">
       <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BALDI_Data\Managed\Rewired_Windows.dll</HintPath>
     </Reference>
-    <Reference Include="System.ComponentModel.Composition">
-      <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BALDI_Data\Managed\System.ComponentModel.Composition.dll</HintPath>
-    </Reference>
     <Reference Include="System.Configuration">
       <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BALDI_Data\Managed\System.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Core">
-      <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BALDI_Data\Managed\System.Core.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.StackTrace">
       <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BALDI_Data\Managed\System.Diagnostics.StackTrace.dll</HintPath>
@@ -86,29 +77,8 @@
     <Reference Include="System.Globalization.Extensions">
       <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BALDI_Data\Managed\System.Globalization.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="System.IO.Compression">
-      <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BALDI_Data\Managed\System.IO.Compression.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IO.Compression.FileSystem">
-      <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BALDI_Data\Managed\System.IO.Compression.FileSystem.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http">
-      <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BALDI_Data\Managed\System.Net.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Numerics">
-      <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BALDI_Data\Managed\System.Numerics.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization">
-      <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BALDI_Data\Managed\System.Runtime.Serialization.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization.Xml">
-      <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BALDI_Data\Managed\System.Runtime.Serialization.Xml.dll</HintPath>
-    </Reference>
     <Reference Include="System.ServiceModel.Internals">
       <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BALDI_Data\Managed\System.ServiceModel.Internals.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml.Linq">
-      <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BALDI_Data\Managed\System.Xml.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.XPath.XDocument">
       <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BALDI_Data\Managed\System.Xml.XPath.XDocument.dll</HintPath>
@@ -360,5 +330,9 @@
       <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BALDI_Data\Managed\UnityEngine.XRModule.dll</HintPath>
     </Reference>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /y &quot;$(TargetPath)&quot; &quot;E:\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BepInEx\plugins&quot;" />
+  </Target>
 
 </Project>
