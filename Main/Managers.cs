@@ -206,28 +206,19 @@ public static class Register
                 PluginCore.itemToStick.Add(itm);
             }
 
-            WeightedItemObject weighted = new WeightedItemObject() { selection = itm, weight = levelObject.weight };
-            levelObject.Load(l =>
+            levelObject.Load((l, w) =>
             {
+                WeightedItemObject weighted = new WeightedItemObject() { selection = itm, weight = w };
                 l.potentialItems = l.potentialItems.AddAs(weighted);
                 l.items = l.items.AddAs(weighted);
             });
 
-            weighted = new WeightedItemObject() { selection = itm, weight = levelObjectStore.weight };
-            levelObjectStore.Load(a => a.shopItems = a.shopItems.AddAs(weighted));
-            levelObjectForced.Load(a => a.forcedItems.Add(itm));
-
-            weighted = new WeightedItemObject() { selection = itm, weight = fieldTrip.weight };
-            fieldTrip.Load(a => a.SetValue("potentialItems", a.GetValue<WeightedItemObject[]>("potentialItems").AddAs(weighted)));
-
-            weighted = new WeightedItemObject() { selection = itm, weight = sceneStore.weight };
-            sceneStore.Load(a => a.shopItems = a.shopItems.AddAs(weighted));
-
-            weighted = new WeightedItemObject() { selection = itm, weight = extraLevelDataAsset.weight };
-            extraLevelDataAsset.Load(a => a.potentialItems = a.potentialItems.AddAs(weighted));
-
-            weighted = new WeightedItemObject() { selection = itm, weight = levelDataContainer.weight };
-            levelDataContainer.Load(a => a.extraData.potentialItems = a.extraData.potentialItems.AddAs(weighted));
+            levelObjectStore.Load((a, w) => a.shopItems = a.shopItems.AddAs(new WeightedItemObject() { selection = itm, weight = w }));
+            levelObjectForced.Load((a, w) => a.forcedItems.Add(itm));
+            fieldTrip.Load((a, w) => a.SetValue("potentialItems", a.GetValue<WeightedItemObject[]>("potentialItems").AddAs(new WeightedItemObject() { selection = itm, weight = w })));
+            sceneStore.Load((a, w) => a.shopItems = a.shopItems.AddAs(new WeightedItemObject() { selection = itm, weight = w }));
+            extraLevelDataAsset.Load((a, w) => a.potentialItems = a.potentialItems.AddAs(new WeightedItemObject() { selection = itm, weight = w }));
+            levelDataContainer.Load((a, w) => a.extraData.potentialItems = a.extraData.potentialItems.AddAs(new WeightedItemObject() { selection = itm, weight = w }));
         }
     }
     [Serializable]
@@ -258,8 +249,7 @@ public static class Register
         }
         public override void Load()
         {
-            WeightedSticker weighted = new WeightedSticker(sticker, scene.weight);
-            scene.Load(scene => scene.potentialStickers = scene.potentialStickers.AddAs(weighted));
+            scene.Load((scene, w) => scene.potentialStickers = scene.potentialStickers.AddAs(new WeightedSticker(sticker, w)));
         }
     }
     [Serializable]
@@ -270,8 +260,7 @@ public static class Register
         public WeightedFilteredAssets<LevelObject> levelObject = new WeightedFilteredAssets<LevelObject>();
         public override void Load()
         {
-            WeightedRoomAsset weighted = new WeightedRoomAsset() { selection = roomAsset, weight = levelObject.weight };
-            levelObject.Load(a => a.roomGroup.Where(b => groupNames.Contains(b.name)).ToList().ForEach(c => c.potentialRooms = c.potentialRooms.AddAs(weighted)));
+            levelObject.Load((a, w) => a.roomGroup.Where(b => groupNames.Contains(b.name)).ToList().ForEach(c => c.potentialRooms = c.potentialRooms.AddAs(new WeightedRoomAsset() { selection = roomAsset, weight = w })));
         }
     }
     [Serializable]
@@ -279,7 +268,7 @@ public static class Register
     {
         public RoomGroup group;
         public WeightedFilteredAssets<LevelObject> levelObject = new WeightedFilteredAssets<LevelObject>();
-        public override void Load() => levelObject.Load(a => a.roomGroup = a.roomGroup.AddAs(group));
+        public override void Load() => levelObject.Load((a, w) => a.roomGroup = a.roomGroup.AddAs(group));
     }
     #endregion
     [Serializable]
@@ -304,8 +293,7 @@ public static class Register
         public WeightedFilteredAssets<LevelObject> levelObject = new WeightedFilteredAssets<LevelObject>();
         public override void Load()
         {
-            WeightedPosterObject weighted = new WeightedPosterObject() { selection = poster, weight = levelObject.weight };
-            levelObject.Load(a => a.posters = a.posters.AddAs(weighted));
+            levelObject.Load((a, w) => a.posters = a.posters.AddAs(new WeightedPosterObject() { selection = poster, weight = w }));
         }
     }
     [Serializable]
@@ -325,53 +313,52 @@ public static class Register
         {
             "F1"
         };
-        public void Load(Action<T> action)
+        public WeightedSelection<string>[] specificedWeights = new WeightedSelection<string>[]
+        {
+       new WeightedSelection<string>()
+       {
+               selection= "F1",
+            weight=99
+       }
+        };
+        public void Load(Action<T, int> action)
         {
             if (affect)
             {
-                Resources.FindObjectsOfTypeAll<T>().Where(a => !excludeNames.Contains(a.name)).ToList().ForEach(action);
+                WeightedSelection<string> weightedOverried;
+                foreach (var item in Resources.FindObjectsOfTypeAll<T>().Where(a => !excludeNames.Contains(a.name)))
+                {
+                    weightedOverried = specificedWeights.Where(a => a.selection == item.name).FirstOrDefault();
+                    action(item, weightedOverried != null ? weightedOverried.weight : weight);
+                }
             }
         }
     }
     public static void Registe(this RandomEvent randomEvent, RandomEventLoadingData data)
     {
-        WeightedRandomEvent weighted = new WeightedRandomEvent() { selection = randomEvent, weight = data.levelObject.weight };
-        data.levelObject.Load(a => a.randomEvents.Add(weighted));
-
-        weighted = new WeightedRandomEvent() { selection = randomEvent, weight = data.levelAsset.weight };
-        data.levelAsset.Load(a => a.events.Add(randomEvent));
-
-        weighted = new WeightedRandomEvent() { selection = randomEvent, weight = data.levelDataContainer.weight };
-        data.levelDataContainer.Load(a => a.events.Add(randomEvent));
+        data.levelObject.Load((a, w) => a.randomEvents.Add(new WeightedRandomEvent() { selection = randomEvent, weight = w }));
+        data.levelAsset.Load((a, w) => a.events.Add(randomEvent));
+        data.levelDataContainer.Load((a, w) => a.events.Add(randomEvent));
     }
     public static void Registe(this RandomEvent randomEvent, string dataName) => randomEvent.Registe(PluginCore.Instance.GetScriptableObjectOrCreate<RandomEventLoadingData>(dataName));
     public static void Registe(this RandomEvent randomEvent) => randomEvent.Registe(randomEvent.name);
     public static void Registe(this StructureBuilder structure, StructureLoadingData data)
     {
         data.structureWithParameters.prefab = structure;
-        WeightedStructureWithParameters weighted = new WeightedStructureWithParameters() { selection = data.structureWithParameters, weight = data.levelObject.weight };
-        data.levelObject.Load(a => a.potentialStructures = a.potentialStructures.AddAs(weighted));
-        data.levelObjectForced.Load(a => a.forcedStructures = a.forcedStructures.AddAs(data.structureWithParameters));
-
-        data.levelAsset.Load(a => a.randomGenStructures.Add(data.structureWithParameters));
-        data.levelDataContainer.Load(a => a.randomGenStructures.Add(data.structureWithParameters));
+        data.levelObject.Load((a, w) => a.potentialStructures = a.potentialStructures.AddAs(new WeightedStructureWithParameters() { selection = data.structureWithParameters, weight = w }));
+        data.levelObjectForced.Load((a, w) => a.forcedStructures = a.forcedStructures.AddAs(data.structureWithParameters));
+        data.levelAsset.Load((a, w) => a.randomGenStructures.Add(data.structureWithParameters));
+        data.levelDataContainer.Load((a, w) => a.randomGenStructures.Add(data.structureWithParameters));
     }
     public static void Registe(this StructureBuilder structure, string dataName) => structure.Registe(PluginCore.Instance.GetScriptableObjectOrCreate<StructureLoadingData>(dataName));
     public static void Registe(this StructureBuilder structure) => structure.Registe(structure.name);
     public static void Registe(this NPC nPC, NPCLoadingData data)
     {
-        data.levelObject.Load(a => a.forcedNpcs = a.forcedNpcs.AddAs(nPC));
-
-        WeightedNPC weighted = new WeightedNPC() { selection = nPC, weight = data.levelDataContainer.weight };
-        data.levelDataContainer.Load(a => a.extraData.potentialNpcs.Add(weighted));
-
-        weighted = new WeightedNPC() { selection = nPC, weight = data.levelDataContainer.weight };
-        data.extraLevelDataAsset.Load(a => a.potentialNpcs.Add(weighted));
-
-        weighted = new WeightedNPC() { selection = nPC, weight = data.scene.weight };
-        data.scene.Load(a => a.potentialNPCs.Add(weighted));
-
-        data.sceneForced.Load(a => a.forcedNpcs = a.forcedNpcs.AddAs(nPC));
+        data.levelObject.Load((a, w) => a.forcedNpcs = a.forcedNpcs.AddAs(nPC));
+        data.levelDataContainer.Load((a, w) => a.extraData.potentialNpcs.Add(new WeightedNPC() { selection = nPC, weight = w }));
+        data.extraLevelDataAsset.Load((a, w) => a.potentialNpcs.Add(new WeightedNPC() { selection = nPC, weight = w }));
+        data.scene.Load((a, w) => a.potentialNPCs.Add(new WeightedNPC() { selection = nPC, weight = w }));
+        data.sceneForced.Load((a, w) => a.forcedNpcs = a.forcedNpcs.AddAs(nPC));
     }
     public static void Registe(this NPC nPC, string dataName) => nPC.Registe(PluginCore.Instance.GetScriptableObjectOrCreate<NPCLoadingData>(dataName));
     public static void Registe(this NPC nPC) => nPC.Registe(nPC.name);
