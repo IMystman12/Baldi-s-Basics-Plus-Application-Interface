@@ -170,6 +170,12 @@ public static class GeneralActions
         return Mathf.Abs(c.x) + Mathf.Abs(c.z);
     }
 }
+public class WaitForTransition : CustomYieldInstruction
+{
+    public static WaitForTransition Instance => instance;
+    static WaitForTransition instance = new WaitForTransition();
+    public override bool keepWaiting => GlobalCam.Instance.TransitionActive;
+}
 public static class Register
 {
     #region "Loader"
