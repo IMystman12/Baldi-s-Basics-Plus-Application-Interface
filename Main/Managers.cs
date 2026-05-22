@@ -196,6 +196,7 @@ public static class GeneralActions
         var lb = GameObject.FindObjectOfType<LevelBuilder>();
         yield return new WaitUntil(() => lb.levelInProgress && lb.levelCreated);
     }
+    public static void FixFonts(this GameObject gameObject) => gameObject.GetComponentsInChildren<TMP_Text>(true).ToList().ForEach(a => a.font = Resources.Load<TMP_FontAsset>($"Comic_{a.fontSize}_Pro"));
 }
 public class WaitForTransition : CustomYieldInstruction
 {
