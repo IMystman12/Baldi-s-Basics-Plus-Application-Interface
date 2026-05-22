@@ -106,13 +106,13 @@ namespace BALDI_FULL_INTERFACE
             {
                 foreach (var item in subtitles[language])
                 {
-                    try
+                    if (!d.ContainsKey(item.Key))
                     {
                         d.Add(item.Key, item.Value);
                     }
-                    catch (Exception e)
+                    else
                     {
-                        Debug.Log($"Wrong localization! Exception: {e}");
+                        d[item.Key] = item.Value;
                     }
                 }
             }
