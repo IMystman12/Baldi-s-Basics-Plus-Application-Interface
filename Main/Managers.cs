@@ -194,9 +194,10 @@ public static class GeneralActions
     {
         yield return new WaitUntil(() => CoreGameManager.Instance && BaseGameManager.Instance);
         var lb = GameObject.FindObjectOfType<LevelBuilder>();
-        yield return new WaitUntil(() => lb.levelInProgress && lb.levelCreated);
+        yield return new WaitUntil(() => !(lb.levelInProgress && !lb.levelCreated));
     }
     public static void FixFonts(this GameObject gameObject) => gameObject.GetComponentsInChildren<TMP_Text>(true).ToList().ForEach(a => a.font = Resources.Load<TMP_FontAsset>($"Comic_{a.fontSize}_Pro"));
+    public static T[] GetNPCs<T>(this EnvironmentController ec) where T : NPC => ec.Npcs.Where(a => a is T).Select(a => (T)a).ToArray();
 }
 public class WaitForTransition : CustomYieldInstruction
 {
