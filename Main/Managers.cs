@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using BALDI_FULL_INTERFACE;
@@ -188,6 +189,13 @@ public static class GeneralActions
         loader.LoadLevel(scene);
     }
     public static void StartGame(this GameLoader loader, SceneObject scene, bool useElevator, int liveIndex = 0, Mode gameMode = Mode.Main) => StartGame(loader, scene, useElevator ? loader.FindWithInactive<ElevatorScreen>("ElevatorScreen") : null, liveIndex, gameMode);
+    public static Coroutine WaitForGameLoading() => GlobalCam.Instance.StartCoroutine(WaitForGameLoadingIE());
+    public static IEnumerator WaitForGameLoadingIE()
+    {
+        yield return new WaitUntil(() => CoreGameManager.Instance && BaseGameManager.Instance);
+        var lb = GameObject.FindObjectOfType<LevelBuilder>();
+        yield return new WaitUntil(() => lb.levelInProgress && lb.levelCreated);
+    }
 }
 public class WaitForTransition : CustomYieldInstruction
 {
