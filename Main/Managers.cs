@@ -169,9 +169,29 @@ public static class GeneralActions
         IntVector2 c = a - b;
         return Mathf.Abs(c.x) + Mathf.Abs(c.z);
     }
+    public static void Transition(this GlobalCam globalCam, UiTransition uiTransition = UiTransition.Dither) => globalCam.Transition(uiTransition, WaitForTransition.DitherTransitionTime);
+    /// <summary>
+    /// From game to interface.
+    /// </summary>
+    /// <param name="globalCam"></param>
+    /// <param name="uiTransition"></param>
+    public static void FadeIn(this GlobalCam globalCam, UiTransition uiTransition = UiTransition.Dither) => globalCam.FadeIn(uiTransition, WaitForTransition.DitherTransitionTime);
+    public static void StartGame(this GameLoader loader, SceneObject scene, ElevatorScreen elevatorScreen = null, int liveIndex = 0, Mode gameMode = Mode.Main)
+    {
+        loader.Initialize(liveIndex);
+        loader.SetMode((int)gameMode);
+        if (elevatorScreen)
+        {
+            elevatorScreen.gameObject.SetActive(true);
+            loader.AssignElevatorScreen(elevatorScreen);
+        }
+        loader.LoadLevel(scene);
+    }
+    public static void StartGame(this GameLoader loader, SceneObject scene, bool useElevator, int liveIndex = 0, Mode gameMode = Mode.Main) => StartGame(loader, scene, useElevator ? loader.FindWithInactive<ElevatorScreen>("ElevatorScreen") : null, liveIndex, gameMode);
 }
 public class WaitForTransition : CustomYieldInstruction
 {
+    public const float DitherTransitionTime = 0.01666667f;
     public static WaitForTransition Instance => instance;
     static WaitForTransition instance = new WaitForTransition();
     public override bool keepWaiting => GlobalCam.Instance.TransitionActive;
@@ -191,13 +211,14 @@ public static class Register
     public class ItemLoadingData : AssetLoadingData
     {
         public ItemObject itm;
-        public WeightedFilteredAssets<LevelObject> levelObject = new WeightedFilteredAssets<LevelObject>()
-            , levelObjectForced = new WeightedFilteredAssets<LevelObject>()
+        public WeightedFilteredAssets<LevelObject> levelObject = new WeightedFilteredAssets<LevelObject>(true)
+            , levelObjectForced = new WeightedFilteredAssets<LevelObject>(false)
             , levelObjectStore = new WeightedFilteredAssets<LevelObject>();
         public WeightedFilteredAssets<SceneObject> sceneStore = new WeightedFilteredAssets<SceneObject>();
         public WeightedFilteredAssets<FieldTripBaseRoomFunction> fieldTrip = new WeightedFilteredAssets<FieldTripBaseRoomFunction>();
         public WeightedFilteredAssets<ExtraLevelDataAsset> extraLevelDataAsset = new WeightedFilteredAssets<ExtraLevelDataAsset>();
         public WeightedFilteredAssets<LevelDataContainer> levelDataContainer = new WeightedFilteredAssets<LevelDataContainer>();
+        public WeightedFilteredAssets<SodaMachine> vendingMachines = new WeightedFilteredAssets<SodaMachine>(false);
         public bool stickToSlot;
         public override void Load()
         {
@@ -225,6 +246,7 @@ public static class Register
             sceneStore.Load((a, w) => a.shopItems = a.shopItems.AddAs(new WeightedItemObject() { selection = itm, weight = w }));
             extraLevelDataAsset.Load((a, w) => a.potentialItems = a.potentialItems.AddAs(new WeightedItemObject() { selection = itm, weight = w }));
             levelDataContainer.Load((a, w) => a.extraData.potentialItems = a.extraData.potentialItems.AddAs(new WeightedItemObject() { selection = itm, weight = w }));
+            vendingMachines.Load((a, w) => a.SetValue("potentialItems", a.GetValue<WeightedItemObject[]>("potentialItems").AddAs(new WeightedItemObject() { selection = itm, weight = w })));
         }
     }
     [Serializable]
@@ -288,7 +310,7 @@ public static class Register
     public class StructureLoadingData : AssetLoadingData
     {
         public StructureWithParameters structureWithParameters = new StructureWithParameters();
-        public WeightedFilteredAssets<LevelObject> levelObject = new WeightedFilteredAssets<LevelObject>(), levelObjectForced = new WeightedFilteredAssets<LevelObject>();
+        public WeightedFilteredAssets<LevelObject> levelObject = new WeightedFilteredAssets<LevelObject>(), levelObjectForced = new WeightedFilteredAssets<LevelObject>(false);
         public WeightedFilteredAssets<LevelAsset> levelAsset = new WeightedFilteredAssets<LevelAsset>();
         public WeightedFilteredAssets<LevelDataContainer> levelDataContainer = new WeightedFilteredAssets<LevelDataContainer>();
     }
@@ -308,11 +330,16 @@ public static class Register
         public WeightedFilteredAssets<LevelObject> levelObject = new WeightedFilteredAssets<LevelObject>();
         public WeightedFilteredAssets<LevelDataContainer> levelDataContainer = new WeightedFilteredAssets<LevelDataContainer>();
         public WeightedFilteredAssets<ExtraLevelDataAsset> extraLevelDataAsset = new WeightedFilteredAssets<ExtraLevelDataAsset>();
-        public WeightedFilteredAssets<SceneObject> scene = new WeightedFilteredAssets<SceneObject>(), sceneForced = new WeightedFilteredAssets<SceneObject>();
+        public WeightedFilteredAssets<SceneObject> scene = new WeightedFilteredAssets<SceneObject>(), sceneForced = new WeightedFilteredAssets<SceneObject>(false);
     }
     [Serializable]
     public class WeightedFilteredAssets<T> where T : UnityEngine.Object
     {
+        public WeightedFilteredAssets()
+        {
+
+        }
+        public WeightedFilteredAssets(bool affectNew) => affect = affectNew;
         public bool affect = true;
         public int weight = 100;
         public string[] excludeNames = new string[]
