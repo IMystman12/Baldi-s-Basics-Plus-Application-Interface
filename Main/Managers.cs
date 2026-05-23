@@ -198,6 +198,14 @@ public static class GeneralActions
     }
     public static void FixFonts(this GameObject gameObject) => gameObject.GetComponentsInChildren<TMP_Text>(true).ToList().ForEach(a => a.font = Resources.Load<TMP_FontAsset>($"Comic_{a.fontSize}_Pro"));
     public static T[] GetNPCs<T>(this EnvironmentController ec) where T : NPC => ec.Npcs.Where(a => a is T).Select(a => (T)a).ToArray();
+    public static void SafeTeleport(this Entity entity, Vector3 position)
+    {
+        entity.SetInteractionState(false);
+        entity.SetFrozen(true);
+        entity.Teleport(position);
+        entity.SetFrozen(false);
+        entity.SetInteractionState(true);
+    }
 }
 public class WaitForTransition : CustomYieldInstruction
 {
