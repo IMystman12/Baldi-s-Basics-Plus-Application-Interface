@@ -33,7 +33,7 @@ namespace BALDI_FULL_INTERFACE
                 __instance.LockSlot(i, val: true);
             }
         }
-        [HarmonyPatch(typeof(NameManager), "Awake"), HarmonyPostfix]
+        [HarmonyPatch(typeof(MenuInitializer), "Start"), HarmonyPostfix]
         public static void Postfix() => WaitForBuiltInResourceLoaded.done = true;
         [HarmonyPatch(typeof(LocalizationManager), "LoadLocalizedText", typeof(string), typeof(Language)), HarmonyPostfix]
         public static void Postfix(LocalizationManager __instance, string fileName, Language language) => RefreshSubtitles(language);
