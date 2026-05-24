@@ -206,6 +206,16 @@ public static class GeneralActions
         entity.SetFrozen(false);
         entity.SetInteractionState(true);
     }
+    public static void FixCursors(this GameObject gameObject) => gameObject.GetComponentsInChildren<CursorInitiator>(true).ToList().ForEach(a => a.cursorPre = a.cursorPre ?? Resources.Load<CursorController>("CursorOrigin"));
+    public static void FixBacks(this GameObject gameObject) => gameObject.GetComponentsInChildren<StandardMenuButton>(true).Where(a => a.name == "Back").ToList().ForEach(a =>
+    {
+        Sprite su = Resources.Load<Sprite>("BackArrow_0"), sl = Resources.Load<Sprite>("BackArrow_1");
+        a.image.sprite = su;
+        a.highlightedSprite = sl;
+        a.unhighlightedSprite = su;
+        a.heldSprite = sl;
+    });
+    public static void FixButtons(this GameObject gameObject) => gameObject.GetComponentsInChildren<StandardMenuButton>(true).ToList().ForEach(a => a.tag = "Button");
 }
 public class WaitForTransition : CustomYieldInstruction
 {
