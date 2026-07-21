@@ -33,12 +33,12 @@ namespace BALDI_FULL_INTERFACE
                 __instance.LockSlot(i, val: true);
             }
         }
-        [HarmonyPatch(typeof(MenuInitializer), "Start"), HarmonyPostfix]
-        public static void Postfix() => WaitForBuiltInResourceLoaded.done = true;
+        [HarmonyPatch(typeof(MenuInitializer), "Start"), HarmonyPrefix]
+        public static void Prefix() => WaitForBuiltInResourceLoaded.done = true;
         [HarmonyPatch(typeof(LocalizationManager), "LoadLocalizedText", typeof(string), typeof(Language)), HarmonyPostfix]
         public static void Postfix(LocalizationManager __instance, string fileName, Language language) => RefreshSubtitles(language);
         [HarmonyPatch(typeof(StickerManager), "AwakeFunction"), HarmonyPrefix]
-        public static bool Prefix()
+        public static bool Prefix0()
         {
             Resources.FindObjectsOfTypeAll<StickerLoadingData>().ToList().ForEach(a => a.LoadInstanced());
             return true;
@@ -95,8 +95,15 @@ namespace BALDI_FULL_INTERFACE
             }
             RefreshSubtitles(LocalizationManager.Instance.GetValue<Language>("currentSubLang"));
 
-            Resources.FindObjectsOfTypeAll<AssetLoadingData>().ToList().ForEach(a => a.Load());
-
+            try
+            {
+                Resources.FindObjectsOfTypeAll<AssetLoadingData>().ToList().ForEach(a => a.Load());
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Asset Loading failed! " + e);
+            }
+            OptionsManager.Initialize();
         }
 
         internal static void RefreshSubtitles(Language language)

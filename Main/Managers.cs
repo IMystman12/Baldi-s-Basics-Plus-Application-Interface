@@ -8,9 +8,112 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityInterface;
+using uobj = UnityEngine.Object;
 [HarmonyPatch]
 public static class OptionsManager
 {
+    internal static void Initialize()
+    {
+        try
+        {
+            var a = GameObject.FindObjectOfType<OptionsMenu>(true);
+            tooltipBase = uobj.Instantiate(a.transform.Find("TooltipBase"), AssetManager.prefabParent).GetComponent<RectTransform>();
+            tooltipBase.name = "TooltipBase";
+
+            var g = new GameObject("TooltipController");
+            g.transform.SetParent(AssetManager.prefabParent);
+
+            tooltipPref = a.gameObject.AddComponent<TooltipController>();
+            tooltipPref.name = "TooltipController";
+            a.GetComponent<TooltipController>().Merge(tooltipPref);
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Tooltip setup failed! " + e.ToString());
+        }
+        try
+        {
+            dropdownPref = uobj.Instantiate(GameObject.FindObjectOfType<HideSeekMenu>(true).transform.Find("PlayStyle"), AssetManager.prefabParent).GetComponent<RectTransform>();
+            dropdownPref.name = "Dropdown";
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Dropdown setup failed! " + e.ToString());
+        }
+        try
+        {
+            togglePref = uobj.Instantiate(GameObject.FindObjectOfType<HideSeekMenu>(true).GetComponentInChildren<MenuToggle>(true), AssetManager.prefabParent).GetComponent<MenuToggle>();
+            togglePref.name = "Toggle";
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Toggle setup failed! " + e.ToString());
+        }
+    }
+    static TooltipController tooltipPref;
+    static RectTransform tooltipBase, dropdownPref;
+    static MenuToggle togglePref;
+    public static TooltipController EnableTooltip(this Canvas canvas) => canvas.gameObject.AddComponent<TooltipController>().InitializeTooltip();
+    public static TooltipController InitializeTooltip(this TooltipController emptyTooltip, int siblingIndex = -1)
+    {
+        tooltipPref.Merge(emptyTooltip);
+        var a = uobj.Instantiate(tooltipBase.gameObject, emptyTooltip.transform);
+        a.transform.SetSiblingIndex(siblingIndex > -1 ? siblingIndex : emptyTooltip.transform.childCount - 2);
+        emptyTooltip.SetValue("tooltipTmp", a.GetComponentInChildren<TMP_Text>(true));
+        emptyTooltip.SetValue("tooltipRect", a.transform.Find("Tooltip").GetComponent<RectTransform>());
+        emptyTooltip.SetValue("tooltipBgRect", a.transform.Find("Tooltip/BG").GetComponent<RectTransform>());
+        return emptyTooltip;
+    }
+    public static MenuToggle CreateToggle(Vector3 localPosition, Transform canvas, string title, bool defualtVal, UnityEvent<bool> onValueChanged, int siblingIndex = -1, string name = "InstancedToggle", string tooltip = "")
+    {
+        var e = uobj.Instantiate(togglePref, canvas.transform);
+        e.Set(defualtVal);
+        var r = e.GetComponent<RectTransform>();
+        r.localPosition = localPosition;
+        r.transform.SetSiblingIndex(siblingIndex > -1 ? siblingIndex : canvas.transform.childCount - 2);
+        r.name = name;
+
+        e.GetComponentInChildren<TMP_Text>(true).SetNewText(title);
+
+        var b = e.GetComponentInChildren<StandardMenuButton>(true);
+
+        b.OnPress = new UnityEvent();
+        b.OnPress.AddListener(() => e.Toggle());
+        b.OnPress.AddListener(() => onValueChanged.Invoke(e.Value));
+
+        if (!string.IsNullOrEmpty(tooltip) && canvas.GetComponent<TooltipController>())
+        {
+            var c = canvas.GetComponent<TooltipController>();
+            b.eventOnHigh = true;
+
+            b.OnHighlight = new UnityEvent();
+            b.OnHighlight.AddListener(() => c.UpdateTooltip(tooltip));
+
+            b.OffHighlight = new UnityEvent();
+            b.OffHighlight.AddListener(() => c.CloseTooltip());
+        }
+
+        return e;
+    }
+    public static TMP_Text CreateDropdown(Vector3 localPosition, Transform canvas, string title, UnityEvent<TMP_Text> leftButtonChanged, UnityEvent<TMP_Text> rightButtonChanged, int siblingIndex = -1, string name = "InstancedDropdown")
+    {
+        var e = uobj.Instantiate(dropdownPref, canvas.transform);
+        e.localPosition = localPosition;
+        e.SetSiblingIndex(siblingIndex > -1 ? siblingIndex : canvas.transform.childCount - 2);
+        e.name = name;
+
+        var t = e.Find("StyleDisplay").GetComponent<TMP_Text>();
+
+        e.Find("StyleTitle").GetComponent<TMP_Text>().SetNewText(title);
+        var s = e.Find("LeftCategoryButton").GetComponent<StandardMenuButton>();
+        s.OnPress = new UnityEvent();
+        s.OnPress.AddListener(() => leftButtonChanged.Invoke(t));
+        s = e.Find("RightCategoryButton").GetComponent<StandardMenuButton>();
+        s.OnPress = new UnityEvent();
+        s.OnPress.AddListener(() => rightButtonChanged.Invoke(t));
+
+        return t;
+    }
     public static Category AddCategory(string key)
     {
         Category category = new Category()
@@ -20,54 +123,38 @@ public static class OptionsManager
         categories.Add(category);
         return category;
     }
-    static List<Category> categories = new List<Category>();
+    [Serializable]
+    public struct Category
+    {
+        public string key;
+    }
     [HarmonyPatch(typeof(OptionsMenu), "Awake"), HarmonyPostfix]
     internal static void Load(OptionsMenu __instance)
     {
         string[] categoryKeys = __instance.GetValue<string[]>("categoryKeys");
         GameObject[] categoriesGameObjects = __instance.GetValue<GameObject[]>("categories");
         GameObject gPre;
-        foreach (var item in categories)
+        foreach (var a in categories)
         {
-            gPre = new GameObject(item.key);
+            gPre = new GameObject(a.key);
             gPre.transform.SetParent(__instance.transform);
             gPre.transform.localPosition = Vector3.zero;
             gPre.transform.localRotation = Quaternion.identity;
-            categoryKeys = categoryKeys.AddAs(item.key);
+            categoryKeys = categoryKeys.AddAs(a.key);
             categoriesGameObjects = categoriesGameObjects.AddAs(gPre);
+            onOptionCategoryLoaded.Invoke(a.key, __instance);
         }
         __instance.SetValue("categoryKeys", categoryKeys);
         __instance.SetValue("categories", categoriesGameObjects);
         __instance.ChangeCategory(0);
     }
-
-    public struct Category
-    {
-        public string key;
-        public List<OptionElement> optionsElements;
-    }
-    public class OptionElement
-    {
-        public string nameKey;
-        public string tooltipKey;
-        public TMP_FontAsset fontToOverride;
-        public UnityEvent onChanged;
-        public virtual float height => 9f;
-        public virtual OptionInstance instance => null;
-        void Build(Vector2 headPosition) => instance?.Build(headPosition, this);
-    }
-    public class OptionInstance : MonoBehaviour
-    {
-        public void Build(Vector2 headPosition, OptionElement data)
-        {
-
-        }
-    }
-    public class StandardMenuButton : OptionElement
-    {
-
-    }
+    static List<Category> categories = new List<Category>();
+    public delegate void OnOptionCategoryLoaded(string key, OptionsMenu menu);
+    public static OnOptionCategoryLoaded onOptionCategoryLoaded;
 }
+/// <summary>
+/// Use "using static GeneralActions;" for better performance!
+/// </summary>
 public static class GeneralActions
 {
     public static Vector2 Converted(this Vector3 position) => new Vector2(position.x, position.z);
@@ -85,6 +172,14 @@ public static class GeneralActions
         if (door is LockdownDoor ld)
         {
             ld.Open(false, makeNoise);
+        }
+        else
+        {
+            door.Open(false, makeNoise);
+            if (!door.IsOpen)
+            {
+                door.OpenTimed(float.PositiveInfinity, makeNoise);
+            }
         }
     }
     public static void OpenTimed(this Door door, float time, bool makeNoise) => door.OpenTimed(time, makeNoise);
@@ -216,6 +311,29 @@ public static class GeneralActions
         a.heldSprite = sl;
     });
     public static void FixButtons(this GameObject gameObject) => gameObject.GetComponentsInChildren<StandardMenuButton>(true).ToList().ForEach(a => a.tag = "Button");
+    public static void FixTooltips(this GameObject gameObject) => gameObject.GetComponentsInChildren<TooltipController>(true).ToList().ForEach(a => a.InitializeTooltip());
+    public static void SetNewText(this TMP_Text text, string key)
+    {
+        if (text == null)
+        {
+            Debug.LogWarning("No text component found! " + StackTraceUtility.ExtractStackTrace());
+            return;
+        }
+        if (text.GetComponent<TextLocalizer>())
+        {
+            var t = text.GetComponent<TextLocalizer>();
+            if (!t.GetValue<TMP_Text>("textBox"))
+            {
+                t.SetValue("textBox", text);
+            }
+            t.key = key;
+            t.GetLocalizedText(key);
+        }
+        else
+        {
+            text.text = key;
+        }
+    }
 }
 public class WaitForTransition : CustomYieldInstruction
 {
@@ -224,6 +342,9 @@ public class WaitForTransition : CustomYieldInstruction
     static WaitForTransition instance = new WaitForTransition();
     public override bool keepWaiting => GlobalCam.Instance.TransitionActive;
 }
+/// <summary>
+/// Registe random generatables. If there aren't any Registe method fits your request,use LOADINGDATAs
+/// </summary>
 public static class Register
 {
     #region "Loader"
@@ -327,6 +448,7 @@ public static class Register
         public override void Load() => levelObject.Load((a, w) => a.roomGroup = a.roomGroup.AddAs(group));
     }
     #endregion
+    #region "Loading Datas"
     [Serializable]
     public class RandomEventLoadingData : AssetLoadingData
     {
@@ -395,6 +517,7 @@ public static class Register
             }
         }
     }
+    #endregion
     public static void Registe(this RandomEvent randomEvent, RandomEventLoadingData data)
     {
         data.levelObject.Load((a, w) => a.randomEvents.Add(new WeightedRandomEvent() { selection = randomEvent, weight = w }));
