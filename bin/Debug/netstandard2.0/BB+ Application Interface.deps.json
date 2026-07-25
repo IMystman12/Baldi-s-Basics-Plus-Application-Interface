@@ -37,7 +37,6 @@
           "System.ServiceModel.Internals": "0.0.0.0",
           "System.Xml.XPath.XDocument": "4.1.1.0",
           "UModelerCommon": "0.0.0.0",
-          "Unity Interface": "1.0.0.0",
           "Unity.Analytics.DataPrivacy": "0.0.0.0",
           "Unity.Mathematics": "0.0.0.0",
           "Unity.ProGrids": "0.0.0.0",
@@ -127,6 +126,34 @@
       "NETStandard.Library/2.0.3": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.0"
+        }
+      },
+      "Newtonsoft.Json/13.0.4": {
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "13.0.0.0",
+            "fileVersion": "13.0.4.30916"
+          }
+        }
+      },
+      "System.CodeDom/10.0.10": {
+        "runtime": {
+          "lib/netstandard2.0/System.CodeDom.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.1026.32716"
+          }
+        }
+      },
+      "Unity Interface/1.0.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.4",
+          "System.CodeDom": "10.0.10"
+        },
+        "runtime": {
+          "Unity Interface.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       },
       "0Harmony/2.9.0.0": {
@@ -342,14 +369,6 @@
           "UModelerCommon.dll": {
             "assemblyVersion": "0.0.0.0",
             "fileVersion": "0.0.0.0"
-          }
-        }
-      },
-      "Unity Interface/1.0.0.0": {
-        "runtime": {
-          "Unity Interface.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
           }
         }
       },
@@ -992,22 +1011,6 @@
             "fileVersion": "0.0.0.0"
           }
         }
-      },
-      "System.CodeDom/10.0.0.0": {
-        "runtime": {
-          "System.CodeDom.dll": {
-            "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.1026.32716"
-          }
-        }
-      },
-      "Newtonsoft.Json/13.0.0.0": {
-        "runtime": {
-          "Newtonsoft.Json.dll": {
-            "assemblyVersion": "13.0.0.0",
-            "fileVersion": "13.0.4.30916"
-          }
-        }
       }
     }
   },
@@ -1030,6 +1033,25 @@
       "sha512": "sha512-st47PosZSHrjECdjeIzZQbzivYBJFv6P2nv4cj2ypdI204DO+vZ7l5raGMiX4eXMJ53RfOIg+/s4DHVZ54Nu2A==",
       "path": "netstandard.library/2.0.3",
       "hashPath": "netstandard.library.2.0.3.nupkg.sha512"
+    },
+    "Newtonsoft.Json/13.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-pdgNNMai3zv51W5aq268sujXUyx7SNdE2bj1wZcWjAQrKMFZV260lbqYop1d2GM67JI1huLRwxo9ZqnfF/lC6A==",
+      "path": "newtonsoft.json/13.0.4",
+      "hashPath": "newtonsoft.json.13.0.4.nupkg.sha512"
+    },
+    "System.CodeDom/10.0.10": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-lru5igKxs4OgWKfMeOpMAYpfB1tNSSXHk2zyiSDO/h0u8RVAhN6KqW9d3ANybDB+ePIHg6HM/NlE8HlpOk4k5A==",
+      "path": "system.codedom/10.0.10",
+      "hashPath": "system.codedom.10.0.10.nupkg.sha512"
+    },
+    "Unity Interface/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "0Harmony/2.9.0.0": {
       "type": "reference",
@@ -1162,11 +1184,6 @@
       "sha512": ""
     },
     "UModelerCommon/0.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Unity Interface/1.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -1567,16 +1584,6 @@
       "sha512": ""
     },
     "UnityEngine.XRModule/0.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "System.CodeDom/10.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Newtonsoft.Json/13.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

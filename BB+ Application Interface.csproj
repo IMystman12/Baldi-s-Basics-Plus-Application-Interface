@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Unity Interface\Unity Interface.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="0Harmony">
       <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BepInEx\core\0Harmony.dll</HintPath>
     </Reference>
@@ -85,9 +89,6 @@
     </Reference>
     <Reference Include="UModelerCommon">
       <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BALDI_Data\Managed\UModelerCommon.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity Interface">
-      <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BepInEx\plugins\Unity Interface.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
       <HintPath>..\..\..\Program Files\steam\steamapps\common\Baldi's Basics Plus Plugined\BALDI_Data\Managed\Unity.Analytics.DataPrivacy.dll</HintPath>

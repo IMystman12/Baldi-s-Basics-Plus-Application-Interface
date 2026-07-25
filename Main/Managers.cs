@@ -334,6 +334,23 @@ public static class GeneralActions
             text.text = key;
         }
     }
+    public static void ForEachPlayers(this CoreGameManager manager, Action<PlayerManager> action)
+    {
+        for (int i = 0; i < manager.TotalPlayers; i++)
+        {
+            action.Invoke(manager.GetPlayer(i));
+        }
+    }
+    public static void FillItem(this ItemManager itmMgr, ItemObject itm, bool overrideAll = false)
+    {
+        for (int j = 0; j < itmMgr.items.Length; j++)
+        {
+            if (itmMgr.items[j] == itmMgr.nothing || overrideAll)
+            {
+                itmMgr.SetItem(itm, j);
+            }
+        }
+    }
 }
 public class WaitForTransition : CustomYieldInstruction
 {

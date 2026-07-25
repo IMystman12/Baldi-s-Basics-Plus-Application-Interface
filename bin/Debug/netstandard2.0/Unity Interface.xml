@@ -9,7 +9,7 @@
             A sort of goods!
             </summary>
         </member>
-        <member name="M:UnityInterface.Collections.Merge``2(``0,``1)">
+        <member name="M:UnityInterface.Collections.Merge(System.Object,System.Object)">
             <summary>
             Merge all vars from parent to target.
             </summary>
@@ -17,6 +17,22 @@
             <typeparam name="T"></typeparam>
             <param name="parent">Merge Sample</param>
             <param name="target">Merged</param>
+        </member>
+        <member name="M:UnityInterface.Collections.Rescript``2(``0)">
+            <summary>
+            The gameObject with script(O) and replace it to script(C)
+            </summary>
+            <typeparam name="O">Script(O) type</typeparam>
+            <typeparam name="C">Script(C) type</typeparam>
+            <returns>Replaced script(C)</returns>
+        </member>
+        <member name="M:UnityInterface.Collections.Rescript``2">
+            <summary>
+            Find the first gameObject with script(O) and replace it to script(C)
+            </summary>
+            <typeparam name="O">Script(O) type</typeparam>
+            <typeparam name="C">Script(C) type</typeparam>
+            <returns>Replaced script(C)</returns>
         </member>
         <member name="M:UnityInterface.PluginManager.QuickOption``1(BepInEx.BaseUnityPlugin,System.String,``0,System.String)">
              <summary>
