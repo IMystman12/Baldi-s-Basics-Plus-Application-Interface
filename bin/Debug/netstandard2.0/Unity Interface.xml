@@ -34,6 +34,24 @@
             <typeparam name="C">Script(C) type</typeparam>
             <returns>Replaced script(C)</returns>
         </member>
+        <member name="M:UnityInterface.Collections.AddIfNotExsist``1(System.Collections.Generic.List{``0},``0)">
+            <summary>
+            Return true mean this itm was addend into list.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="list"></param>
+            <param name="itm"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UnityInterface.Collections.ScrollEnum``1(``0,System.Int32,System.Int32)">
+            <summary>
+            Scroll the int in [0,EnumLength-1]. Enum must be int-based.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="enumBase"></param>
+            <param name="direction"></param>
+            <returns></returns>
+        </member>
         <member name="M:UnityInterface.PluginManager.QuickOption``1(BepInEx.BaseUnityPlugin,System.String,``0,System.String)">
              <summary>
             Shortcut I built! To Bind setting quickly. Nothing special.
@@ -45,13 +63,6 @@
              <param name="summaries"></param>
              <returns></returns>
         </member>
-        <member name="M:UnityInterface.PluginManager.GetProjectFolder(System.String)">
-            <summary>
-            Return the folder: Project_{GUID} full path.
-            </summary>
-            <param name="GUID">Customized GUID</param>
-            <returns></returns>
-        </member>
         <member name="M:UnityInterface.PluginManager.GetProjectFolder(BepInEx.BaseUnityPlugin)">
             <summary>
             Return the folder: Project_{plugin.Info.Metadata.GUID} full path.
@@ -59,19 +70,14 @@
             <param name="plugin">Folder's owner</param>
             <returns></returns>
         </member>
+        <member name="T:UnityInterface.ResourcesManager">
+            <summary>
+            Manager assets from base game or loaded.
+            </summary>
+        </member>
         <member name="T:UnityInterface.WaitForBuiltInResourceLoaded">
             <summary>
             If you have toggle done as true! It will still waiting!
-            </summary>
-        </member>
-        <member name="T:DEBUGGER_TRANSFORM_RECT">
-            <summary>
-            Summary TST!
-            </summary>
-        </member>
-        <member name="M:DEBUGGER_TRANSFORM_RECT.Method">
-            <summary>
-            Summary TST #0
             </summary>
         </member>
     </members>

@@ -1,9 +1,7 @@
-﻿
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using BALDI_FULL_INTERFACE;
 using BepInEx;
 using HarmonyLib;
 using UnityEngine;
@@ -40,7 +38,7 @@ namespace BALDI_FULL_INTERFACE
         [HarmonyPatch(typeof(StickerManager), "AwakeFunction"), HarmonyPrefix]
         public static bool Prefix0()
         {
-            Resources.FindObjectsOfTypeAll<StickerLoadingData>().ToList().ForEach(a => a.LoadInstanced());
+            ResourcesManager.Get<StickerLoadingData>().ToList().ForEach(a => a.LoadInstanced());
             return true;
         }
 
@@ -59,7 +57,7 @@ namespace BALDI_FULL_INTERFACE
 
             int i = 0;
             List<string> langNames = Enum.GetNames(typeof(Language)).ToList();
-            foreach (var caption0 in Resources.FindObjectsOfTypeAll<SubtitleObject>().ToArray())
+            foreach (var caption0 in ResourcesManager.Get<SubtitleObject>().ToArray())
             {
                 SubtitleObject caption = caption0;
                 if (caption == null || caption.localization == null || caption.localization.items == null || caption.localization.items.Length == 0)
@@ -97,13 +95,15 @@ namespace BALDI_FULL_INTERFACE
 
             try
             {
-                Resources.FindObjectsOfTypeAll<AssetLoadingData>().ToList().ForEach(a => a.Load());
+                ResourcesManager.Get<AssetLoadingData>().ToList().ForEach(a => a.Load());
             }
             catch (Exception e)
             {
                 Debug.LogError("Asset Loading failed! " + e);
             }
             OptionsManager.Initialize();
+
+            registerEvent?.Invoke();
         }
 
         internal static void RefreshSubtitles(Language language)

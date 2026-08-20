@@ -7,6 +7,7 @@ using HarmonyLib;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using UnityInterface;
 using uobj = UnityEngine.Object;
 [HarmonyPatch]
@@ -17,11 +18,11 @@ public static class OptionsManager
         try
         {
             var a = GameObject.FindObjectOfType<OptionsMenu>(true);
-            tooltipBase = uobj.Instantiate(a.transform.Find("TooltipBase"), AssetManager.prefabParent).GetComponent<RectTransform>();
+            tooltipBase = uobj.Instantiate(a.transform.Find("TooltipBase"), ResourcesManager.prefabParent).GetComponent<RectTransform>();
             tooltipBase.name = "TooltipBase";
 
             var g = new GameObject("TooltipController");
-            g.transform.SetParent(AssetManager.prefabParent);
+            g.transform.SetParent(ResourcesManager.prefabParent);
 
             tooltipPref = a.gameObject.AddComponent<TooltipController>();
             tooltipPref.name = "TooltipController";
@@ -33,7 +34,7 @@ public static class OptionsManager
         }
         try
         {
-            dropdownPref = uobj.Instantiate(GameObject.FindObjectOfType<HideSeekMenu>(true).transform.Find("PlayStyle"), AssetManager.prefabParent).GetComponent<RectTransform>();
+            dropdownPref = uobj.Instantiate(GameObject.FindObjectOfType<HideSeekMenu>(true).transform.Find("PlayStyle"), ResourcesManager.prefabParent).GetComponent<RectTransform>();
             dropdownPref.name = "Dropdown";
         }
         catch (Exception e)
@@ -42,7 +43,7 @@ public static class OptionsManager
         }
         try
         {
-            togglePref = uobj.Instantiate(GameObject.FindObjectOfType<HideSeekMenu>(true).GetComponentInChildren<MenuToggle>(true), AssetManager.prefabParent).GetComponent<MenuToggle>();
+            togglePref = uobj.Instantiate(GameObject.FindObjectOfType<HideSeekMenu>(true).GetComponentInChildren<MenuToggle>(true), ResourcesManager.prefabParent).GetComponent<MenuToggle>();
             togglePref.name = "Toggle";
         }
         catch (Exception e)
@@ -59,12 +60,13 @@ public static class OptionsManager
         tooltipPref.Merge(emptyTooltip);
         var a = uobj.Instantiate(tooltipBase.gameObject, emptyTooltip.transform);
         a.transform.SetSiblingIndex(siblingIndex > -1 ? siblingIndex : emptyTooltip.transform.childCount - 2);
+        a.transform.Find("Tooltip/BG").GetComponent<Image>().pixelsPerUnitMultiplier = 100;
         emptyTooltip.SetValue("tooltipTmp", a.GetComponentInChildren<TMP_Text>(true));
         emptyTooltip.SetValue("tooltipRect", a.transform.Find("Tooltip").GetComponent<RectTransform>());
         emptyTooltip.SetValue("tooltipBgRect", a.transform.Find("Tooltip/BG").GetComponent<RectTransform>());
         return emptyTooltip;
     }
-    public static MenuToggle CreateToggle(Vector3 localPosition, Transform canvas, string title, bool defualtVal, UnityEvent<bool> onValueChanged, int siblingIndex = -1, string name = "InstancedToggle", string tooltip = "")
+    public static MenuToggle CreateToggle(Vector3 localPosition, Transform canvas, string title, bool defualtVal, UnityAction<bool> onValueChanged, int siblingIndex = -1, string name = "InstancedToggle", string tooltip = "")
     {
         var e = uobj.Instantiate(togglePref, canvas.transform);
         e.Set(defualtVal);
@@ -95,7 +97,7 @@ public static class OptionsManager
 
         return e;
     }
-    public static TMP_Text CreateDropdown(Vector3 localPosition, Transform canvas, string title, UnityEvent<TMP_Text> leftButtonChanged, UnityEvent<TMP_Text> rightButtonChanged, int siblingIndex = -1, string name = "InstancedDropdown")
+    public static TMP_Text CreateDropdown(Vector3 localPosition, Transform canvas, string title, UnityAction<TMP_Text> leftButtonChanged, UnityAction<TMP_Text> rightButtonChanged, int siblingIndex = -1, string name = "InstancedDropdown")
     {
         var e = uobj.Instantiate(dropdownPref, canvas.transform);
         e.localPosition = localPosition;
@@ -208,17 +210,17 @@ public static class GeneralActions
     }
     public static void SetGlobalLight(LightMode lightMode, int standardLightStrength, Color minLightColor)
     {
-        Resources.FindObjectsOfTypeAll<LevelObject>().ToList().ForEach(a =>
+        ResourcesManager.Get<LevelObject>().ToList().ForEach(a =>
         {
             a.lightMode = lightMode;
             a.standardLightStrength = standardLightStrength;
         });
-        Resources.FindObjectsOfTypeAll<ExtraLevelDataAsset>().ToList().ForEach(a =>
+        ResourcesManager.Get<ExtraLevelDataAsset>().ToList().ForEach(a =>
         {
             a.lightMode = lightMode;
             a.minLightColor = minLightColor;
         });
-        Resources.FindObjectsOfTypeAll<LevelDataContainer>().ToList().ForEach(a =>
+        ResourcesManager.Get<LevelDataContainer>().ToList().ForEach(a =>
         {
             a.extraData.lightMode = lightMode;
             a.extraData.minLightColor = minLightColor;
@@ -291,7 +293,7 @@ public static class GeneralActions
         var lb = GameObject.FindObjectOfType<LevelBuilder>();
         yield return new WaitUntil(() => !(lb.levelInProgress && !lb.levelCreated));
     }
-    public static void FixFonts(this GameObject gameObject) => gameObject.GetComponentsInChildren<TMP_Text>(true).ToList().ForEach(a => a.font = Resources.Load<TMP_FontAsset>($"Comic_{a.fontSize}_Pro"));
+    public static void FixFonts(this GameObject gameObject) => gameObject.GetComponentsInChildren<TMP_Text>(true).ToList().ForEach(a => a.font = ResourcesManager.Get<TMP_FontAsset>($"Comic_{a.fontSize}_Pro"));
     public static T[] GetNPCs<T>(this EnvironmentController ec) where T : NPC => ec.Npcs.Where(a => a is T).Select(a => (T)a).ToArray();
     public static void SafeTeleport(this Entity entity, Vector3 position)
     {
@@ -301,10 +303,10 @@ public static class GeneralActions
         entity.SetFrozen(false);
         entity.SetInteractionState(true);
     }
-    public static void FixCursors(this GameObject gameObject) => gameObject.GetComponentsInChildren<CursorInitiator>(true).ToList().ForEach(a => a.cursorPre = a.cursorPre ?? Resources.Load<CursorController>("CursorOrigin"));
+    public static void FixCursors(this GameObject gameObject) => gameObject.GetComponentsInChildren<CursorInitiator>(true).ToList().ForEach(a => a.cursorPre = a.cursorPre ?? ResourcesManager.Get<CursorController>("CursorOrigin"));
     public static void FixBacks(this GameObject gameObject) => gameObject.GetComponentsInChildren<StandardMenuButton>(true).Where(a => a.name == "Back").ToList().ForEach(a =>
     {
-        Sprite su = Resources.Load<Sprite>("BackArrow_0"), sl = Resources.Load<Sprite>("BackArrow_1");
+        Sprite su = ResourcesManager.Get<Sprite>("BackArrow_0"), sl = ResourcesManager.Get<Sprite>("BackArrow_1");
         a.image.sprite = su;
         a.highlightedSprite = sl;
         a.unhighlightedSprite = su;
@@ -364,6 +366,8 @@ public class WaitForTransition : CustomYieldInstruction
 /// </summary>
 public static class Register
 {
+    internal static Action registerEvent;
+    public static void Add(Action action) => registerEvent += action;
     #region "Loader"
     [Serializable]
     public class AssetLoadingData : ScriptableObject
@@ -526,7 +530,7 @@ public static class Register
             if (affect)
             {
                 WeightedSelection<string> weightedOverried;
-                foreach (var item in Resources.FindObjectsOfTypeAll<T>().Where(a => !excludeNames.Contains(a.name)))
+                foreach (var item in ResourcesManager.Get<T>().Where(a => !excludeNames.Contains(a.name)))
                 {
                     weightedOverried = specificedWeights.Where(a => a.selection == item.name).FirstOrDefault();
                     action(item, weightedOverried != null ? weightedOverried.weight : weight);
