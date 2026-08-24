@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using BepInEx;
 using HarmonyLib;
+using MEC;
+using MidiPlayerTK;
 using UnityEngine;
 using UnityInterface;
 using static Register;
@@ -38,8 +41,32 @@ namespace BALDI_FULL_INTERFACE
         [HarmonyPatch(typeof(StickerManager), "AwakeFunction"), HarmonyPrefix]
         public static bool Prefix0()
         {
-            ResourcesManager.Get<StickerLoadingData>().ToList().ForEach(a => a.LoadInstanced());
+            ResourcesManager.Get<StickerDataObject>().ToList().ForEach(a => a.LoadInstanced());
             return true;
+        }
+        [HarmonyPatch(typeof(MidiFilePlayer), "MPTK_Play", new Type[] { }), HarmonyPostfix]
+        public static void Postfix(MidiFilePlayer __instance)
+        {
+            try
+            {
+                if (Resources.Load<TextAsset>(Path.Combine("MidiDB", __instance.MPTK_MidiName)) != null)
+                {
+                    return;
+                }
+                var bytes = ResourcesManager.Get<Midi>(__instance.MPTK_MidiName).data;
+                if (__instance.MPTK_CorePlayer)
+                {
+                    Routine.RunCoroutine(__instance.ThreadCorePlay(bytes).CancelWith(__instance.gameObject), Segment.RealtimeUpdate);
+                }
+                else
+                {
+                    Routine.RunCoroutine(__instance.ThreadLegacyPlay(bytes).CancelWith(__instance.gameObject), Segment.RealtimeUpdate);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Midi: {__instance.MPTK_MidiName} custom player failed! Exception: " + e);
+            }
         }
 
         void Awake()
@@ -93,15 +120,9 @@ namespace BALDI_FULL_INTERFACE
             }
             RefreshSubtitles(LocalizationManager.Instance.GetValue<Language>("currentSubLang"));
 
-            try
-            {
-                ResourcesManager.Get<AssetLoadingData>().ToList().ForEach(a => a.Load());
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Asset Loading failed! " + e);
-            }
             OptionsManager.Initialize();
+
+           
 
             registerEvent?.Invoke();
         }

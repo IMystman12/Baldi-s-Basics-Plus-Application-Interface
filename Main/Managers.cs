@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using BALDI_FULL_INTERFACE;
 using HarmonyLib;
+using MidiPlayerTK;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -23,9 +25,8 @@ public static class OptionsManager
 
             var g = new GameObject("TooltipController");
             g.transform.SetParent(ResourcesManager.prefabParent);
+            tooltipPref = g.gameObject.AddComponent<TooltipController>();
 
-            tooltipPref = a.gameObject.AddComponent<TooltipController>();
-            tooltipPref.name = "TooltipController";
             a.GetComponent<TooltipController>().Merge(tooltipPref);
         }
         catch (Exception e)
@@ -362,62 +363,30 @@ public class WaitForTransition : CustomYieldInstruction
     public override bool keepWaiting => GlobalCam.Instance.TransitionActive;
 }
 /// <summary>
-/// Registe random generatables. If there aren't any Registe method fits your request,use LOADINGDATAs
+///
 /// </summary>
 public static class Register
 {
     internal static Action registerEvent;
     public static void Add(Action action) => registerEvent += action;
     #region "Loader"
-    [Serializable]
-    public class AssetLoadingData : ScriptableObject
+    public class MidiLoader : IAssetLoader<Midi>
     {
-        public virtual void Load()
+        public Midi LoadAsset(string path)
         {
-
+            string name = Path.GetFileNameWithoutExtension(path);
+            if (!MidiPlayerGlobal.CurrentMidiSet.MidiFiles.Contains(name))
+            {
+                MidiPlayerGlobal.CurrentMidiSet.MidiFiles.Add(name);
+                MidiPlayerGlobal.BuildMidiList();
+            }
+            return new Midi(File.ReadAllBytes(path));
         }
     }
-    [Serializable]
-    public class ItemLoadingData : AssetLoadingData
+    public class Midi : UnityEngine.Object
     {
-        public ItemObject itm;
-        public WeightedFilteredAssets<LevelObject> levelObject = new WeightedFilteredAssets<LevelObject>(true)
-            , levelObjectForced = new WeightedFilteredAssets<LevelObject>(false)
-            , levelObjectStore = new WeightedFilteredAssets<LevelObject>();
-        public WeightedFilteredAssets<SceneObject> sceneStore = new WeightedFilteredAssets<SceneObject>();
-        public WeightedFilteredAssets<FieldTripBaseRoomFunction> fieldTrip = new WeightedFilteredAssets<FieldTripBaseRoomFunction>();
-        public WeightedFilteredAssets<ExtraLevelDataAsset> extraLevelDataAsset = new WeightedFilteredAssets<ExtraLevelDataAsset>();
-        public WeightedFilteredAssets<LevelDataContainer> levelDataContainer = new WeightedFilteredAssets<LevelDataContainer>();
-        public WeightedFilteredAssets<SodaMachine> vendingMachines = new WeightedFilteredAssets<SodaMachine>(false);
-        public bool stickToSlot;
-        public override void Load()
-        {
-            if (!itm)
-            {
-                Debug.LogWarning("No item found!");
-                return;
-            }
-            PlayerFileManager.Instance.itemObjects.Add(itm);
-            if (stickToSlot)
-            {
-                PluginCore.itemToStick.Add(itm);
-            }
-
-            levelObject.Load((l, w) =>
-            {
-                WeightedItemObject weighted = new WeightedItemObject() { selection = itm, weight = w };
-                l.potentialItems = l.potentialItems.AddAs(weighted);
-                l.items = l.items.AddAs(weighted);
-            });
-
-            levelObjectStore.Load((a, w) => a.shopItems = a.shopItems.AddAs(new WeightedItemObject() { selection = itm, weight = w }));
-            levelObjectForced.Load((a, w) => a.forcedItems.Add(itm));
-            fieldTrip.Load((a, w) => a.SetValue("potentialItems", a.GetValue<WeightedItemObject[]>("potentialItems").AddAs(new WeightedItemObject() { selection = itm, weight = w })));
-            sceneStore.Load((a, w) => a.shopItems = a.shopItems.AddAs(new WeightedItemObject() { selection = itm, weight = w }));
-            extraLevelDataAsset.Load((a, w) => a.potentialItems = a.potentialItems.AddAs(new WeightedItemObject() { selection = itm, weight = w }));
-            levelDataContainer.Load((a, w) => a.extraData.potentialItems = a.extraData.potentialItems.AddAs(new WeightedItemObject() { selection = itm, weight = w }));
-            vendingMachines.Load((a, w) => a.SetValue("potentialItems", a.GetValue<WeightedItemObject[]>("potentialItems").AddAs(new WeightedItemObject() { selection = itm, weight = w })));
-        }
+        public Midi(byte[] bytes) => data = bytes;
+        public byte[] data;
     }
     [Serializable]
     public class SubtitleObject : ScriptableObject
@@ -425,13 +394,10 @@ public static class Register
         public LocalizationData localization = new LocalizationData();
     }
     [Serializable]
-    public class StickerLoadingData : AssetLoadingData
+    public class StickerDataObject : ScriptableObject
     {
         public Sticker sticker;
-        public Sprite sprite;
-        public float duplicateOddsMultiplier = 1f;
-        public bool affectsLevelGeneration;
-        public WeightedFilteredAssets<SceneObject> scene = new WeightedFilteredAssets<SceneObject>();
+        public StickerData data;
         public void LoadInstanced()
         {
             List<StickerData> array = StickerManager.Instance.GetValue<StickerData[]>("stickerData").ToList();
@@ -440,131 +406,28 @@ public static class Register
             {
                 array.Add(new StickerData());
             }
-            array[i].sprite = sprite;
-            array[i].duplicateOddsMultiplier = duplicateOddsMultiplier;
-            array[i].affectsLevelGeneration = affectsLevelGeneration;
+            array[i] = data;
             StickerManager.Instance.SetValue("stickerData", array.ToArray());
         }
-        public override void Load()
-        {
-            scene.Load((scene, w) => scene.potentialStickers = scene.potentialStickers.AddAs(new WeightedSticker(sticker, w)));
-        }
-    }
-    [Serializable]
-    public class RoomAssetLoadingData : AssetLoadingData
-    {
-        public string[] groupNames;
-        public RoomAsset roomAsset;
-        public WeightedFilteredAssets<LevelObject> levelObject = new WeightedFilteredAssets<LevelObject>();
-        public override void Load()
-        {
-            levelObject.Load((a, w) => a.roomGroup.Where(b => groupNames.Contains(b.name)).ToList().ForEach(c => c.potentialRooms = c.potentialRooms.AddAs(new WeightedRoomAsset() { selection = roomAsset, weight = w })));
-        }
-    }
-    [Serializable]
-    public class RoomGroupLoadingData : AssetLoadingData
-    {
-        public RoomGroup group;
-        public WeightedFilteredAssets<LevelObject> levelObject = new WeightedFilteredAssets<LevelObject>();
-        public override void Load() => levelObject.Load((a, w) => a.roomGroup = a.roomGroup.AddAs(group));
     }
     #endregion
-    #region "Loading Datas"
-    [Serializable]
-    public class RandomEventLoadingData : AssetLoadingData
+    public static void AddItemsToSave(params ItemObject[] items) => PlayerFileManager.Instance.itemObjects.AddRange(items);
+    public static void Add(this LevelObject levelObject, params WeightedItemObject[] items) => levelObject.potentialItems = levelObject.potentialItems.AddAs(items);
+}
+[Serializable]
+public class WeightTable<T>
+{
+    public List<WeightedSelection<T>> selection = new List<WeightedSelection<T>>();
+    public WeightTable(params (T, int)[] selection) => this.selection = new List<WeightedSelection<T>>(selection.Select(a => new WeightedSelection<T>()
     {
-        public WeightedFilteredAssets<LevelObject> levelObject = new WeightedFilteredAssets<LevelObject>();
-        public WeightedFilteredAssets<LevelAsset> levelAsset = new WeightedFilteredAssets<LevelAsset>();
-        public WeightedFilteredAssets<LevelDataContainer> levelDataContainer = new WeightedFilteredAssets<LevelDataContainer>();
-    }
-    [Serializable]
-    public class StructureLoadingData : AssetLoadingData
+        selection = a.Item1,
+        weight = a.Item2
+    }));
+    public U[] Array<U>() where U : WeightedSelection<T> => selection.Select(a =>
     {
-        public StructureWithParameters structureWithParameters = new StructureWithParameters();
-        public WeightedFilteredAssets<LevelObject> levelObject = new WeightedFilteredAssets<LevelObject>(), levelObjectForced = new WeightedFilteredAssets<LevelObject>(false);
-        public WeightedFilteredAssets<LevelAsset> levelAsset = new WeightedFilteredAssets<LevelAsset>();
-        public WeightedFilteredAssets<LevelDataContainer> levelDataContainer = new WeightedFilteredAssets<LevelDataContainer>();
-    }
-    [Serializable]
-    public class PosterLoadingData : AssetLoadingData
-    {
-        public PosterObject poster;
-        public WeightedFilteredAssets<LevelObject> levelObject = new WeightedFilteredAssets<LevelObject>();
-        public override void Load()
-        {
-            levelObject.Load((a, w) => a.posters = a.posters.AddAs(new WeightedPosterObject() { selection = poster, weight = w }));
-        }
-    }
-    [Serializable]
-    public class NPCLoadingData : AssetLoadingData
-    {
-        public WeightedFilteredAssets<LevelObject> levelObject = new WeightedFilteredAssets<LevelObject>();
-        public WeightedFilteredAssets<LevelDataContainer> levelDataContainer = new WeightedFilteredAssets<LevelDataContainer>();
-        public WeightedFilteredAssets<ExtraLevelDataAsset> extraLevelDataAsset = new WeightedFilteredAssets<ExtraLevelDataAsset>();
-        public WeightedFilteredAssets<SceneObject> scene = new WeightedFilteredAssets<SceneObject>(), sceneForced = new WeightedFilteredAssets<SceneObject>(false);
-    }
-    [Serializable]
-    public class WeightedFilteredAssets<T> where T : UnityEngine.Object
-    {
-        public WeightedFilteredAssets()
-        {
-
-        }
-        public WeightedFilteredAssets(bool affectNew) => affect = affectNew;
-        public bool affect = true;
-        public int weight = 100;
-        public string[] excludeNames = new string[]
-        {
-            "F1"
-        };
-        public WeightedSelection<string>[] specificedWeights = new WeightedSelection<string>[]
-        {
-       new WeightedSelection<string>()
-       {
-               selection= "F1",
-            weight=99
-       }
-        };
-        public void Load(Action<T, int> action)
-        {
-            if (affect)
-            {
-                WeightedSelection<string> weightedOverried;
-                foreach (var item in ResourcesManager.Get<T>().Where(a => !excludeNames.Contains(a.name)))
-                {
-                    weightedOverried = specificedWeights.Where(a => a.selection == item.name).FirstOrDefault();
-                    action(item, weightedOverried != null ? weightedOverried.weight : weight);
-                }
-            }
-        }
-    }
-    #endregion
-    public static void Registe(this RandomEvent randomEvent, RandomEventLoadingData data)
-    {
-        data.levelObject.Load((a, w) => a.randomEvents.Add(new WeightedRandomEvent() { selection = randomEvent, weight = w }));
-        data.levelAsset.Load((a, w) => a.events.Add(randomEvent));
-        data.levelDataContainer.Load((a, w) => a.events.Add(randomEvent));
-    }
-    public static void Registe(this RandomEvent randomEvent, string dataName) => randomEvent.Registe(PluginCore.Instance.GetScriptableObjectOrCreate<RandomEventLoadingData>(dataName));
-    public static void Registe(this RandomEvent randomEvent) => randomEvent.Registe(randomEvent.name);
-    public static void Registe(this StructureBuilder structure, StructureLoadingData data)
-    {
-        data.structureWithParameters.prefab = structure;
-        data.levelObject.Load((a, w) => a.potentialStructures = a.potentialStructures.AddAs(new WeightedStructureWithParameters() { selection = data.structureWithParameters, weight = w }));
-        data.levelObjectForced.Load((a, w) => a.forcedStructures = a.forcedStructures.AddAs(data.structureWithParameters));
-        data.levelAsset.Load((a, w) => a.randomGenStructures.Add(data.structureWithParameters));
-        data.levelDataContainer.Load((a, w) => a.randomGenStructures.Add(data.structureWithParameters));
-    }
-    public static void Registe(this StructureBuilder structure, string dataName) => structure.Registe(PluginCore.Instance.GetScriptableObjectOrCreate<StructureLoadingData>(dataName));
-    public static void Registe(this StructureBuilder structure) => structure.Registe(structure.name);
-    public static void Registe(this NPC nPC, NPCLoadingData data)
-    {
-        data.levelObject.Load((a, w) => a.forcedNpcs = a.forcedNpcs.AddAs(nPC));
-        data.levelDataContainer.Load((a, w) => a.extraData.potentialNpcs.Add(new WeightedNPC() { selection = nPC, weight = w }));
-        data.extraLevelDataAsset.Load((a, w) => a.potentialNpcs.Add(new WeightedNPC() { selection = nPC, weight = w }));
-        data.scene.Load((a, w) => a.potentialNPCs.Add(new WeightedNPC() { selection = nPC, weight = w }));
-        data.sceneForced.Load((a, w) => a.forcedNpcs = a.forcedNpcs.AddAs(nPC));
-    }
-    public static void Registe(this NPC nPC, string dataName) => nPC.Registe(PluginCore.Instance.GetScriptableObjectOrCreate<NPCLoadingData>(dataName));
-    public static void Registe(this NPC nPC) => nPC.Registe(nPC.name);
+        var b = Activator.CreateInstance<U>();
+        b.selection = a.selection;
+        b.weight = a.weight;
+        return b;
+    }).ToArray();
 }
