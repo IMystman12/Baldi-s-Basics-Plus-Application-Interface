@@ -194,8 +194,7 @@ public static class GeneralActions
         }
         door.Unlock();
     }
-    public static void OpenTimedWithKey(this Door door, float time = 2) => door.OpenTimedWithKey(time, door.makesNoise);
-    public static void OpenTimedWithKey(this Door door, float time, bool makeNoise)
+    public static void OpenTimedWithKey(this Door door, bool makeNoise, float time = float.PositiveInfinity)
     {
         door.OpenTimed(time, makeNoise);
         door.UnlockGeneral();
@@ -354,6 +353,8 @@ public static class GeneralActions
             }
         }
     }
+    public static void SpawnItem(this EnvironmentController ec, ItemObject itm) => ec.RespawnItemInRandomRoom(itm);
+    public static void SpawnItem(this RoomController room, ItemObject itm) => room?.ec.RespawnItemInRoom(itm, room);
 }
 public class WaitForTransition : CustomYieldInstruction
 {
@@ -367,12 +368,12 @@ public class WaitForTransition : CustomYieldInstruction
 /// </summary>
 public static class Register
 {
-    internal static Action registerEvent;
-    public static void Add(Action action) => registerEvent += action;
+    internal static List<Action> registerEvent = new List<Action>();
+    public static void Add(Action action) => registerEvent.Add(action);
     #region "Loader"
     public class MidiLoader : IAssetLoader<Midi>
     {
-        public Midi LoadAsset(string path)
+        public Midi Load(string path)
         {
             string name = Path.GetFileNameWithoutExtension(path);
             if (!MidiPlayerGlobal.CurrentMidiSet.MidiFiles.Contains(name))
@@ -380,12 +381,11 @@ public static class Register
                 MidiPlayerGlobal.CurrentMidiSet.MidiFiles.Add(name);
                 MidiPlayerGlobal.BuildMidiList();
             }
-            return new Midi(File.ReadAllBytes(path));
+            return new Midi() { data = File.ReadAllBytes(path) };
         }
     }
     public class Midi : UnityEngine.Object
     {
-        public Midi(byte[] bytes) => data = bytes;
         public byte[] data;
     }
     [Serializable]

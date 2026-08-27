@@ -92,7 +92,16 @@ namespace BALDI_FULL_INTERFACE
                     continue;
                 }
                 LocalizationData localizationData = caption.localization;
-                i = langNames.IndexOf(caption.name);
+                i = -1;
+                for (int a = 0; a < langNames.Count; a++)
+                {
+                    if (caption.name.Contains(langNames[a]))
+                    {
+                        i = a;
+                        break;
+                    }
+                }
+
                 if (i > -1)
                 {
                     Language l = (Language)i;
@@ -122,9 +131,17 @@ namespace BALDI_FULL_INTERFACE
 
             OptionsManager.Initialize();
 
-           
-
-            registerEvent?.Invoke();
+            registerEvent?.ForEach(a =>
+            {
+                try
+                {
+                    a?.Invoke();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogWarning($"One of actions in register has failed! " + e);
+                }
+            });
         }
 
         internal static void RefreshSubtitles(Language language)
