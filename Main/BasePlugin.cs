@@ -19,7 +19,7 @@ namespace BALDI_FULL_INTERFACE
         internal static bool debugMode;
         internal static PluginCore Instance => instance;
         private static PluginCore instance;
-        internal static List<ItemObject> itemToStick = new List<ItemObject>();
+        public static List<ItemObject> itemToStick = new List<ItemObject>();
         internal static Dictionary<Language, Dictionary<string, string>> subtitles = new Dictionary<Language, Dictionary<string, string>>();
         [HarmonyPatch(typeof(ItemManager), "Update"), HarmonyPostfix]
         public static void Postfix(ItemManager __instance)
@@ -35,15 +35,9 @@ namespace BALDI_FULL_INTERFACE
             }
         }
         [HarmonyPatch(typeof(MenuInitializer), "Start"), HarmonyPrefix]
-        public static void Prefix() => WaitForBuiltInResourceLoaded.done = true;
+        public static void Prefix() => WaitForBuiltInResource.done = true;
         [HarmonyPatch(typeof(LocalizationManager), "LoadLocalizedText", typeof(string), typeof(Language)), HarmonyPostfix]
         public static void Postfix(LocalizationManager __instance, string fileName, Language language) => RefreshSubtitles(language);
-        [HarmonyPatch(typeof(StickerManager), "AwakeFunction"), HarmonyPrefix]
-        public static bool Prefix0()
-        {
-            ResourcesManager.Get<StickerDataObject>().ToList().ForEach(a => a.LoadInstanced());
-            return true;
-        }
         [HarmonyPatch(typeof(MidiFilePlayer), "MPTK_Play", new Type[] { }), HarmonyPostfix]
         public static void Postfix(MidiFilePlayer __instance)
         {
@@ -78,7 +72,7 @@ namespace BALDI_FULL_INTERFACE
         }
         IEnumerator Start()
         {
-            yield return new WaitForBuiltInResourceLoaded();
+            yield return new WaitForBuiltInResource();
 
             yield return new WaitForSecondsRealtime(1);
 
@@ -130,6 +124,19 @@ namespace BALDI_FULL_INTERFACE
             RefreshSubtitles(LocalizationManager.Instance.GetValue<Language>("currentSubLang"));
 
             OptionsManager.Initialize();
+
+            var stickerMan = ResourcesManager.Get<CoreGameManager>().First().GetComponentInChildren<StickerManager>();
+            List<StickerData> array = stickerMan.GetValue<StickerData[]>("stickerData").ToList();
+            foreach (var a in ResourcesManager.Get<StickerDataObject>())
+            {
+                i = (int)a.sticker;
+                while (i > (array.Count - 1))
+                {
+                    array.Add(new StickerData());
+                }
+                array[i] = a.data;
+            }
+            stickerMan.SetValue("stickerData", array.ToArray());
 
             registerEvent?.ForEach(a =>
             {

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Baldi's Basics Games\\Plugins\\Baldi's Basics Plus Application Interface\\BB+ Application Interface.csproj": {}
+    "E:\\Baldi's Basics Games\\Plugins\\Plugins\\Baldi's Basics Plus Application Interface\\BB+ Application Interface.csproj": {}
   },
   "projects": {
-    "E:\\Baldi's Basics Games\\Plugins\\Baldi's Basics Plus Application Interface\\BB+ Application Interface.csproj": {
+    "E:\\Baldi's Basics Games\\Plugins\\Plugins\\Baldi's Basics Plus Application Interface\\BB+ Application Interface.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Baldi's Basics Games\\Plugins\\Baldi's Basics Plus Application Interface\\BB+ Application Interface.csproj",
+        "projectUniqueName": "E:\\Baldi's Basics Games\\Plugins\\Plugins\\Baldi's Basics Plus Application Interface\\BB+ Application Interface.csproj",
         "projectName": "BB+ Application Interface",
-        "projectPath": "E:\\Baldi's Basics Games\\Plugins\\Baldi's Basics Plus Application Interface\\BB+ Application Interface.csproj",
+        "projectPath": "E:\\Baldi's Basics Games\\Plugins\\Plugins\\Baldi's Basics Plus Application Interface\\BB+ Application Interface.csproj",
         "packagesPath": "C:\\Users\\BDC\\.nuget\\packages\\",
-        "outputPath": "E:\\Baldi's Basics Games\\Plugins\\Baldi's Basics Plus Application Interface\\obj\\",
+        "outputPath": "E:\\Baldi's Basics Games\\Plugins\\Plugins\\Baldi's Basics Plus Application Interface\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -33,8 +33,8 @@
           "netstandard2.0": {
             "targetAlias": "netstandard2.0",
             "projectReferences": {
-              "E:\\Baldi's Basics Games\\Plugins\\Unity Interface\\Unity Interface.csproj": {
-                "projectPath": "E:\\Baldi's Basics Games\\Plugins\\Unity Interface\\Unity Interface.csproj"
+              "E:\\Baldi's Basics Games\\Plugins\\Plugins\\Unity Interface\\Unity Interface.csproj": {
+                "projectPath": "E:\\Baldi's Basics Games\\Plugins\\Plugins\\Unity Interface\\Unity Interface.csproj"
               }
             }
           }
@@ -73,18 +73,18 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.317\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.318\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\Baldi's Basics Games\\Plugins\\Unity Interface\\Unity Interface.csproj": {
+    "E:\\Baldi's Basics Games\\Plugins\\Plugins\\Unity Interface\\Unity Interface.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Baldi's Basics Games\\Plugins\\Unity Interface\\Unity Interface.csproj",
+        "projectUniqueName": "E:\\Baldi's Basics Games\\Plugins\\Plugins\\Unity Interface\\Unity Interface.csproj",
         "projectName": "Unity Interface",
-        "projectPath": "E:\\Baldi's Basics Games\\Plugins\\Unity Interface\\Unity Interface.csproj",
+        "projectPath": "E:\\Baldi's Basics Games\\Plugins\\Plugins\\Unity Interface\\Unity Interface.csproj",
         "packagesPath": "C:\\Users\\BDC\\.nuget\\packages\\",
-        "outputPath": "E:\\Baldi's Basics Games\\Plugins\\Unity Interface\\obj\\",
+        "outputPath": "E:\\Baldi's Basics Games\\Plugins\\Plugins\\Unity Interface\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -150,7 +150,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.317\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.318\\RuntimeIdentifierGraph.json"
         }
       }
     }

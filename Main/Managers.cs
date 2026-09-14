@@ -398,17 +398,6 @@ public static class Register
     {
         public Sticker sticker;
         public StickerData data;
-        public void LoadInstanced()
-        {
-            List<StickerData> array = StickerManager.Instance.GetValue<StickerData[]>("stickerData").ToList();
-            int i = (int)sticker;
-            while (i > (array.Count - 1))
-            {
-                array.Add(new StickerData());
-            }
-            array[i] = data;
-            StickerManager.Instance.SetValue("stickerData", array.ToArray());
-        }
     }
     #endregion
     public static void AddItemsToSave(params ItemObject[] items) => PlayerFileManager.Instance.itemObjects.AddRange(items);
@@ -423,9 +412,9 @@ public class WeightTable<T>
         selection = a.Item1,
         weight = a.Item2
     }));
-    public U[] Array<U>() where U : WeightedSelection<T> => selection.Select(a =>
+    public U[] Array<U>() where U : WeightedSelection<T>, new() => selection.Select(a =>
     {
-        var b = Activator.CreateInstance<U>();
+        var b = new U();
         b.selection = a.selection;
         b.weight = a.weight;
         return b;

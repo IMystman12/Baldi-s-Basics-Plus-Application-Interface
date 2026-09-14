@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BB+ Application Interface")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+366a34832daac18d7b4776d821e4a21c0040478f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6b9f3f4bc35a4da6d9643c455c89229fe84bdd13")]
 [assembly: System.Reflection.AssemblyProductAttribute("BB+ Application Interface")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BB+ Application Interface")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
