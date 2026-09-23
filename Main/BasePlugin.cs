@@ -38,31 +38,6 @@ namespace BALDI_FULL_INTERFACE
         public static void Prefix() => WaitForBuiltInResource.done = true;
         [HarmonyPatch(typeof(LocalizationManager), "LoadLocalizedText", typeof(string), typeof(Language)), HarmonyPostfix]
         public static void Postfix(LocalizationManager __instance, string fileName, Language language) => RefreshSubtitles(language);
-        [HarmonyPatch(typeof(MidiFilePlayer), "MPTK_Play", new Type[] { }), HarmonyPostfix]
-        public static void Postfix(MidiFilePlayer __instance)
-        {
-            try
-            {
-                if (Resources.Load<TextAsset>(Path.Combine("MidiDB", __instance.MPTK_MidiName)) != null)
-                {
-                    return;
-                }
-                var bytes = ResourcesManager.Get<Midi>(__instance.MPTK_MidiName).data;
-                if (__instance.MPTK_CorePlayer)
-                {
-                    Routine.RunCoroutine(__instance.ThreadCorePlay(bytes).CancelWith(__instance.gameObject), Segment.RealtimeUpdate);
-                }
-                else
-                {
-                    Routine.RunCoroutine(__instance.ThreadLegacyPlay(bytes).CancelWith(__instance.gameObject), Segment.RealtimeUpdate);
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"Midi: {__instance.MPTK_MidiName} custom player failed! Exception: " + e);
-            }
-        }
-
         void Awake()
         {
             instance = this;

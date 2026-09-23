@@ -371,23 +371,6 @@ public static class Register
     internal static List<Action> registerEvent = new List<Action>();
     public static void Add(Action action) => registerEvent.Add(action);
     #region "Loader"
-    public class MidiLoader : IAssetLoader<Midi>
-    {
-        public Midi Load(string path)
-        {
-            string name = Path.GetFileNameWithoutExtension(path);
-            if (!MidiPlayerGlobal.CurrentMidiSet.MidiFiles.Contains(name))
-            {
-                MidiPlayerGlobal.CurrentMidiSet.MidiFiles.Add(name);
-                MidiPlayerGlobal.BuildMidiList();
-            }
-            return new Midi() { data = File.ReadAllBytes(path) };
-        }
-    }
-    public class Midi : UnityEngine.Object
-    {
-        public byte[] data;
-    }
     [Serializable]
     public class SubtitleObject : ScriptableObject
     {
