@@ -1,13 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "QFl4yi43lAU=",
+  "dgSpecHash": "T2RQtT9aM90=",
   "success": true,
   "projectFilePath": "E:\\Baldi's Basics Games\\Plugins\\Plugins\\Baldi's Basics Plus Application Interface\\BB+ Application Interface.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\BDC\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\BDC\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
-    "C:\\Users\\BDC\\.nuget\\packages\\newtonsoft.json\\13.0.4\\newtonsoft.json.13.0.4.nupkg.sha512",
-    "C:\\Users\\BDC\\.nuget\\packages\\system.codedom\\10.0.10\\system.codedom.10.0.10.nupkg.sha512"
+    "C:\\Users\\BDC\\.nuget\\packages\\newtonsoft.json\\13.0.4\\newtonsoft.json.13.0.4.nupkg.sha512"
   ],
   "logs": []
 }
